@@ -1,0 +1,83 @@
+#******************************************************************************
+#
+#       地面情報スクリプトファイル[field000.txt]
+#       Auther : Hodaka Niwa
+#
+#******************************************************************************
+SCRIPT				#この行は絶対に消さないこと！
+
+#------------------------------------------------------------------------------
+#  地面情報
+#------------------------------------------------------------------------------
+FIELDSET
+	TEX_TYPE = 0											# テクスチャの番号(mapのテキストの番号と一致してあります)
+	POS = 0.0 0.0 0.0										# 座標
+	ROT = 0.0 0.0 0.0										# 向き
+	COL = 1.0 1.0 1.0 1.0									# 色
+	WIDTH = 100.0											# 1ブロック分の幅の大きさ
+	DEPTH = 150.0											# 1ブロック分の奥行の大きさ
+	XBLOCK = 39												# 横の分割数さ
+	ZBLOCK = 49												# 奥行の分割数
+	TEXSPLIT_U = 1											# テクスチャU座標の分割数
+	TEXSPLIT_V = 1											# テクスチャV座標の分割数
+	CULLING = 1												# カリングするかどうか
+	BINARY_FILENAME = data/TEXT/MAP/FIELD/map000/field000.bin		# 頂点情報が格納されたバイナリファイル名
+END_FIELDSET
+
+FIELDSET
+	TEX_TYPE = 3											# テクスチャの番号(mapのテキストの番号と一致してあります)
+	POS = 430.0 -27.0 4230.0								# 座標
+	ROT = 0.0 0.0 0.0										# 向き
+	COL = 1.0 1.0 1.0 1.0									# 色
+	WIDTH = 70.0											# 1ブロック分の幅の大きさ
+	DEPTH = 50.0											# 1ブロック分の奥行の大きさ
+	XBLOCK = 11												# 横の分割数さ
+	ZBLOCK = 24												# 奥行の分割数
+	TEXSPLIT_U = 1											# テクスチャU座標の分割数
+	TEXSPLIT_V = 1											# テクスチャV座標の分割数
+	CULLING = 0												# カリングするかどうか
+	BINARY_FILENAME = data/TEXT/MAP/FIELD/map000/bridge000.bin		# 頂点情報が格納されたバイナリファイル名
+END_FIELDSET
+
+FIELDSET
+	TEX_TYPE = 0											# テクスチャの番号(mapのテキストの番号と一致してあります)
+	POS = 0.0 -30.0 5570.0									# 座標
+	ROT = 0.0 0.0 0.0										# 向き
+	COL = 1.0 1.0 1.0 1.0									# 色
+	WIDTH = 100.0											# 1ブロック分の幅の大きさ
+	DEPTH = 150.0											# 1ブロック分の奥行の大きさ
+	XBLOCK = 39												# 横の分割数
+	ZBLOCK = 10												# 奥行の分割数
+	TEXSPLIT_U = 1											# テクスチャU座標の分割数
+	TEXSPLIT_V = 1											# テクスチャV座標の分割数
+	CULLING = 1												# カリングするかどうか
+	BINARY_FILENAME = data/TEXT/MAP/FIELD/map000/field001.bin		# 頂点情報が格納されたバイナリファイル名
+END_FIELDSET
+
+FIELDSET
+	TEX_TYPE = 4											# テクスチャの番号(mapのテキストの番号と一致してあります)
+	POS = 0.0 -80.0 4223.0									# 座標
+	ROT = 0.0 0.0 0.0										# 向き
+	COL = 1.0 1.0 1.0 1.0									# 色
+	WIDTH = 2000.0											# 1ブロック分の幅の大きさ
+	DEPTH = 1000.0											# 1ブロック分の奥行の大きさ
+	XBLOCK = 3												# 横の分割数さ
+	ZBLOCK = 2												# 奥行の分割数
+	CULLING = 1												# カリングするかどうか
+	BINARY_FILENAME = data/TEXT/MAP/FIELD/map000/gravel000.bin		# 頂点情報が格納されたバイナリファイル名
+END_FIELDSET
+
+FIELDSET
+	TEX_TYPE = 4											# テクスチャの番号(mapのテキストの番号と一致してあります)
+	POS = 2950.0 562.0 4223.0								# 座標
+	ROT = 0.0 0.0 0.0										# 向き
+	COL = 1.0 1.0 1.0 1.0									# 色
+	WIDTH = 1000.0											# 1ブロック分の幅の大きさ
+	DEPTH = 1000.0											# 1ブロック分の奥行の大きさ
+	XBLOCK = 2												# 横の分割数さ
+	ZBLOCK = 2												# 奥行の分割数
+	CULLING = 1												# カリングするかどうか
+	BINARY_FILENAME = data/TEXT/MAP/FIELD/map000/gravel001.bin		# 頂点情報が格納されたバイナリファイル名
+END_FIELDSET
+
+END_SCRIPT				#この行は絶対に消さないこと！

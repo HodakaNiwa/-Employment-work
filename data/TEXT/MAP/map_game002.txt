@@ -1,0 +1,50 @@
+#******************************************************************************
+#
+#       マップ情報スクリプトファイル[map_game002.txt]
+#       Auther : Hodaka Niwa
+#
+#******************************************************************************
+SCRIPT				#この行は絶対に消さないこと！
+
+#------------------------------------------------------------------------------
+#  使用するテクスチャ数
+#------------------------------------------------------------------------------
+NUM_TEXTURE = 4
+
+#------------------------------------------------------------------------------
+#  使用するテクスチャのファイルパス名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/COMMON/field002.jpg
+TEXTURE_FILENAME = data/TEXTURE/COMMON/mountain000.png
+TEXTURE_FILENAME = data/TEXTURE/COMMON/sky000.jpg
+TEXTURE_FILENAME = data/TEXTURE/GAME/hidden_iten000.png
+
+#------------------------------------------------------------------------------
+#  使用するモデル数
+#------------------------------------------------------------------------------
+NUM_MODEL = 3
+
+#------------------------------------------------------------------------------
+#  使用するモデルのファイルパス名
+#------------------------------------------------------------------------------
+MODEL_FILENAME = data/MODEL/OBJECT/fence000.x
+MODEL_FILENAME = data/MODEL/OBJECT/fence001.x
+MODEL_FILENAME = data/MODEL/OBJECT/fence002.x
+
+#------------------------------------------------------------------------------
+#  マップ情報
+#------------------------------------------------------------------------------
+MAPSET
+	FIELD_FILENAME = data/TEXT/MAP/FIELD/field002.txt				# 地面の情報が書かれたテキストファイル名
+	OBJECT_FILENAME = data/TEXT/MAP/OBJECT/object002.txt			# 配置物の情報が書かれたテキストファイル名
+	MOUNTAIN_FILENAME = data/TEXT/MAP/MOUNTAIN/mountain002.txt		# 山の情報が書かれたテキストファイル名
+	SKY_FILENAME = data/TEXT/MAP/SKY/sky002.txt						# 空の情報が書かれたテキストファイル名
+	ENEMY_FILENAME = data/TEXT/MAP/ENEMY/enemy_set002.txt			# 敵の情報が書かれたテキストファイル名
+	BILLBOARD_FILENAME = data/TEXT/MAP/BILLBOARD/billboard002.txt	# 配置用ビルボード情報が書かれたテキストファイル名
+	EFFECT_FILENAME = data/TEXT/MAP/EFFECT/set_effect002.txt		# 配置エフェクトの情報が書かれたテキストファイル名
+	WALL_FILENAME = data/TEXT/MAP/WALL/wall002.txt					# 壁情報が書かれたテキストファイル名
+	PLAYER_DEFAULT_SPAWN = 0.0 0.0 -1000.0							# プレイヤーのデフォルトスポーン位置
+	CAMERA_DEFAULT_ROT = 0.0 0.0 0.0								# カメラのデフォルト向き
+END_MAPSET
+
+END_SCRIPT			#この行は絶対に消さないこと！

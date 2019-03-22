@@ -1,0 +1,962 @@
+#******************************************************************************
+#
+#       配置物情報スクリプトファイル[object001.txt]
+#       Auther : Hodaka Niwa
+#
+#******************************************************************************
+SCRIPT				#この行は絶対に消さないこと！
+
+#------------------------------------------------------------------------------
+#  モデル情報
+#------------------------------------------------------------------------------
+OBJECTGOALSET
+	TYPE = 10						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -1850.3 -8.0 7950.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 2.0 2.3 2.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTGOALSET
+
+OBJECTSET
+	TYPE = 9						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -4847.7 0.0 7932.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 15.7 4.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 9						# 使用するモデルの番号
+	COLLISION = 2					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3082.1 0.0 7932.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 27.0 4.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 9						# 使用するモデルの番号
+	COLLISION = 2					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 7927.0 0.0 6.3			# モデルの座標
+	ROT = 0.0 90.0 0.0				# モデルの向き
+	SCALE = 46.0 4.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 9						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -117.0 0.0 -7645.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 46.0 4.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 9						# 使用するモデルの番号
+	COLLISION = 2					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -7756.1 0.0 142.6			# モデルの座標
+	ROT = 0.0 90.0 0.0				# モデルの向き
+	SCALE = 46.0 4.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 6425.6 0.0 -1677.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 13.0 15.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 6468.8 0.0 3166.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 13.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 2						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -1079.5 0.0 7225.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 12.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -1079.5 0.0 6661.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 140.1 0.0 6045.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 38.5 13.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3611.3 0.0 6050.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 25.0 13.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 2						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3611.3 0.0 6905.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 25.0 20.0 19.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 697.1 0.0 6913.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 25.0 20.0 19.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5159.1 0.0 7085.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 6099.1 0.0 7085.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 7039.1 0.0 7082.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 7039.1 0.0 6458.2			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 7039.1 0.0 5829.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 7039.1 0.0 5196.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5980.1 0.0 5196.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 12.5 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5980.1 0.0 4548.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 12.5 12.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5980.1 0.0 3844.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 12.5 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 6590.3 0.0 786.4			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 25.0 30.0 70.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5891.9 0.0 -2347.9			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5891.9 0.0 -2991.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 13.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5891.9 0.0 -3691.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 5891.9 0.0 -4403.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 4947.1 0.0 -4419.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3973.1 0.0 -4423.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.5 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5766.2 0.0 -6654.4			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 7.0 7.0 9.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5863.9 0.0 -5416.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 7.0 7.0 9.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 3						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6859.6 0.0 1708.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 14.0 13.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 3						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6859.6 0.0 2518.9			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 14.0 13.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6859.6 0.0 3330.4			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 14.0 13.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6860.7 0.0 4145.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 14.0 13.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6860.7 0.0 4956.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 14.0 13.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5990.9 0.0 5698.2			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 9.2 7.0 13.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 374.0 0.0 1254.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 13.0 18.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -2389.8 0.0 1253.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 13.0 18.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 3						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3139.4 0.0 1253.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 13.0 18.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 3						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3139.4 0.0 -632.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 13.0 18.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 380.7 0.0 -623.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 13.0 18.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -2374.7 0.0 -623.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 13.0 18.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -3205.2 0.0 -1906.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 14.0 20.0 29.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 2						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -3389.0 0.0 -5023.4			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -507.3 0.0 -7196.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -3224.0 0.0 -7189.9			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5952.0 0.0 -7189.9			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6146.2 0.0 -6056.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -5331.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -4635.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -3940.2			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 11.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -3244.2			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 7.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -2662.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 12.0 8.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -1998.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 15.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -1135.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 15.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5049.1 0.0 -383.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 13.0 11.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5996.8 0.0 -371.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 3						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6315.8 0.0 307.9			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 5.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -6006.5 0.0 1014.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5088.3 0.0 1057.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5088.3 0.0 2669.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5088.3 0.0 3353.6			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 5.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5088.3 0.0 4049.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 15.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 8						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5088.3 0.0 4749.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -5090.0 0.0 5445.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 5.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -4193.8 0.0 6046.5			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -3349.8 0.0 6045.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 9.0 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -2553.9 0.0 6045.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 8.8 10.0 12.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -2553.9 0.0 6661.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 8.8 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 2						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -2553.9 0.0 7225.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 8.8 12.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 1290.0 0.0 -7200.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3027.8 0.0 -7200.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3026.6 0.0 -6668.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 8.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3026.2 0.0 -6152.0			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3026.6 0.0 -5563.8			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3026.4 0.0 -4988.9			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 1						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3026.4 0.0 -4413.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 1290.2 0.0 -6632.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 1290.2 0.0 -6028.3			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 1290.2 0.0 -5508.4			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 8.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 1290.2 0.0 -5004.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 10.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 0						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 1290.2 0.0 -4400.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 2						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 590.2 0.0 -4400.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 5.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 4						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 122.3 0.0 -4400.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 5.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 3						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -329.6 0.0 -4400.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 5.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 5						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -793.5 0.0 -4400.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 5.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -1961.5 0.0 -4436.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 20.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -3361.2 0.0 -4434.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 10.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -2873.3 0.0 -3042.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 20.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = -1013.4 0.0 -3042.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 20.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 850.6 0.0 -3042.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 20.0 5.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 6						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 3231.4 0.0 -3042.7			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 31.0 8.0 10.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+OBJECTSET
+	TYPE = 7						# 使用するモデルの番号
+	COLLISION = 0					# 当たり判定の種類
+	COL_RANGE = 0.0					# 当たり判定を取る範囲
+	POS = 358.4 0.0 2832.1			# モデルの座標
+	ROT = 0.0 0.0 0.0				# モデルの向き
+	SCALE = 30.0 20.0 30.0				# モデルの大きさ
+	ROLL_SPEED = 0.0 0.0 0.0		# モデルの回転するスピード
+END_OBJECTSET
+
+END_SCRIPT				#この行は絶対に消さないこと！

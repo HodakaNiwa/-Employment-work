@@ -1,0 +1,254 @@
+#******************************************************************************
+#
+#       当たり判定用箱モデル情報スクリプトファイル[boxcollider000.txt]
+#       Auther : Hodaka Niwa
+#
+#******************************************************************************
+SCRIPT				#この行は絶対に消さないこと！
+
+#------------------------------------------------------------------------------
+#  当たり判定用箱モデル情報
+#------------------------------------------------------------------------------
+#---------------------
+#  橋の右側
+#---------------------
+BOXCOLLIDERSET
+	POS = 805.0 0.0 3620.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 808.0 80.0 3560.0		# 座標
+	WIDTH = 38.0				# 箱の横幅
+	HEIGHT = 100.0				# 箱の高さ
+	DEPTH = 50.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 35.0 3730.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 62.0 3840.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 90.0 3950.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 120.0 4100.0	# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 250.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 95.0 4350.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 75.0 4490.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 25.0 4640.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 -20.0 4770.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 120.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 35.0 4890.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 40.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 805.0 90.0 4920.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 30.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+
+#---------------------
+#  橋の左側
+#---------------------
+BOXCOLLIDERSET
+	POS = 5.0 0.0 3620.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 8.0 80.0 3560.0		# 座標
+	WIDTH = 38.0				# 箱の横幅
+	HEIGHT = 100.0				# 箱の高さ
+	DEPTH = 50.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 35.0 3730.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 62.0 3840.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 90.0 3950.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 120.0 4100.0	# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 250.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 95.0 4350.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 75.0 4490.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 25.0 4640.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 -20.0 4770.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 120.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 35.0 4890.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 40.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = 5.0 90.0 4920.0		# 座標
+	WIDTH = 40.0				# 箱の横幅
+	HEIGHT = 200.0				# 箱の高さ
+	DEPTH = 30.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+
+#---------------------
+#  滝の手前
+#---------------------
+BOXCOLLIDERSET
+	POS = 1790.0 -80.0 3670.0		# 座標
+	WIDTH = 300.0				# 箱の横幅
+	HEIGHT = 400.0				# 箱の高さ
+	DEPTH = 1150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+BOXCOLLIDERSET
+	POS = -2090.0 -80.0 3670.0		# 座標
+	WIDTH = 300.0				# 箱の横幅
+	HEIGHT = 400.0				# 箱の高さ
+	DEPTH = 1150.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+#---------------------
+#  ゴール手前の左側
+#---------------------
+
+BOXCOLLIDERSET
+	POS = -1950.0 -80.0 6040.0		# 座標
+	WIDTH = 100.0				# 箱の横幅
+	HEIGHT = 400.0				# 箱の高さ
+	DEPTH = 30.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+#---------------------
+#  ゴール手前の右側
+#---------------------
+BOXCOLLIDERSET
+	POS = 1900.0 -80.0 6040.0		# 座標
+	WIDTH = 100.0				# 箱の横幅
+	HEIGHT = 400.0				# 箱の高さ
+	DEPTH = 30.0				# 箱の奥行
+	RETURN = 1					# 当たった時に押し戻すかどうか
+END_BOXCOLLIDERSET
+
+END_SCRIPT				#この行は絶対に消さないこと！

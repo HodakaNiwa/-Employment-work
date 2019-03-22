@@ -1,0 +1,298 @@
+#******************************************************************************
+#
+#       敵の配置情報スクリプトファイル[set_enemy000.txt]
+#       Auther : Hodaka Niwa
+#
+#******************************************************************************
+SCRIPT				#この行は絶対に消さないこと！
+
+#------------------------------------------------------------------------------
+#  使用する敵のデータ
+#------------------------------------------------------------------------------
+ENEMYDATA_FILENAME = data/TEXT/CHARACTER/enemy000.txt		# 敵1体目
+ENEMYDATA_FILENAME = data/TEXT/CHARACTER/enemy001.txt		# 敵2体目
+
+#------------------------------------------------------------------------------
+#  敵の配置情報
+#------------------------------------------------------------------------------
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 541.0 116.0 -1385.1		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 361.8 140.0 -1381.5		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = -483.2 64.0 87.3		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = -597.3 76.0 280.2		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = -357.5 76.0 272.9		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 999.4 28.0 504.7		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1173.2 36.0 585.7		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 876.4 20.0 671.5		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 440.6 0.0 1314.2		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 342.9 0.0 1446.5		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 494.5 20.0 1533.9		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1096.5 168.0 2399.3		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1051.6 144.0 2510.3		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = -334.4 88.0 2320.9		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = -242.5 68.0 2400.5		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = -451.4 100.0 2357.0		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1193.1 -16.0 5629.5		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 0					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1125.0 -16.0 5741.8		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1258.4 -16.0 5710.9		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+ENEMYSET
+	AISET						# AIの情報
+		CHEACKDISTANCE = 300.0	# 警戒できる範囲
+		ATTACKDISTANCE = 60.0	# 攻撃を仕掛ける範囲
+		ATTACKRANDOM = 100		# 攻撃を仕掛けるタイミング(ランダム値)
+	END_AISET
+
+	TYPE = 1					# 種類
+	LIFE = 26					# 体力
+	SCORE = 1000				# 倒した時に増えるスコア量
+	POS = 1235.2 -16.0 5812.2		# 座標
+	ROT = 0.0 0.0 0.0			# 向き
+END_ENEMYSET
+
+END_SCRIPT				#この行は絶対に消さないこと！

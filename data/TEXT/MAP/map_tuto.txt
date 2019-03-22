@@ -1,0 +1,35 @@
+#******************************************************************************
+#
+#       マップ情報スクリプトファイル[map_tuto.txt]
+#       Auther : Hodaka Niwa
+#
+#******************************************************************************
+SCRIPT				#この行は絶対に消さないこと！
+
+#------------------------------------------------------------------------------
+#  使用するテクスチャ数
+#------------------------------------------------------------------------------
+NUM_TEXTURE = 4
+
+#------------------------------------------------------------------------------
+#  使用するテクスチャのファイルパス名
+#------------------------------------------------------------------------------
+TEXTURE_FILENAME = data/TEXTURE/COMMON/field000.jpg
+TEXTURE_FILENAME = data/TEXTURE/COMMON/mountain000.png
+TEXTURE_FILENAME = data/TEXTURE/COMMON/sky000.jpg
+TEXTURE_FILENAME = data/TEXTURE/COMMON/wall000.png
+
+#------------------------------------------------------------------------------
+#  マップ情報
+#------------------------------------------------------------------------------
+MAPSET
+	FIELD_FILENAME = data/TEXT/MAP/FIELD/tuto_field.txt				# 地面の情報が書かれたテキストファイル名
+	MOUNTAIN_FILENAME = data/TEXT/MAP/MOUNTAIN/tuto_mountain.txt	# 山の情報が書かれたテキストファイル名
+	SKY_FILENAME = data/TEXT/MAP/SKY/tuto_sky.txt					# 空の情報が書かれたテキストファイル名
+	ENEMY_FILENAME = data/TEXT/MAP/ENEMY/tuto_set_enemy.txt			# 敵の情報が書かれたテキストファイル名
+	WALL_FILENAME = data/TEXT/MAP/WALL/wall_tuto.txt				# 壁情報が書かれたテキストファイル名
+	PLAYER_DEFAULT_SPAWN = 0.0 0.0 -500.0								# プレイヤーのデフォルトスポーン位置
+	CAMERA_DEFAULT_ROT = 0.0 0.0 0.0								# カメラのデフォルト向き
+END_MAPSET
+
+END_SCRIPT			#この行は絶対に消さないこと！
