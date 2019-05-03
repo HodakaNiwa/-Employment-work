@@ -26,7 +26,7 @@
 #include "ui.h"
 #include "map.h"
 #include "combo.h"
-#include "sceneBillboard.h"
+#include "lockon_poly.h"
 #include "textureManager.h"
 #include "shadow.h"
 #include "functionlib.h"
@@ -38,10 +38,6 @@
 //     マクロ定義
 //*****************************************************************************
 // データ入力用マクロ
-#define PLAYER_AVATEROFFSET_1        (D3DXVECTOR3(80.0f,0.0f,0.0f))     // １体目の分身のオフセット
-#define PLAYER_AVATEROFFSET_2        (D3DXVECTOR3(-80.0f,0.0f,0.0f))    // ２体目の分身のオフセット
-#define PLAYER_AVATEROFFSET_3        (D3DXVECTOR3(0.0f,0.0f,80.0f))     // ３体目の分身のオフセット
-#define PLAYER_AVATEROFFSET_4        (D3DXVECTOR3(0.0f,0.0f,-80.0f))    // ４体目の分身のオフセット
 #define PLAYER_AVATER_CUTTIMING      (1200)                             // 分身を出してから減らすまでの時間
 #define PLAYER_MAX_MODELPARTS        (20)                               // プレイヤーのパーツ数
 #define PLAYER_SPECIALGAUGE_ORBITADD (1.0f)                             // 必殺ゲージをどれくらい増やすか(軌跡斬をしないとき)
@@ -52,6 +48,12 @@
 #define PLAYER_SHADOW_HEIGHT         (18.0f)                            // プレイヤーの影の高さ
 #define PLAYER_SHADOW_COLOR          (D3DXCOLOR(1.0f,1.0f,1.0f,0.5f))   // プレイヤーの影の色
 #define PLAYER_DAMAGE_COUNTER_MAX    (120)                              // プレイヤーのダメージ管理カウンターの最大値
+#define PLAYER_ORBITATTACK_DAMAGE    (10)                               // オービットアタック時のダメージ
+#define PLAYER_ORBITATTACK_RANGE     (100)                              // オービットアタック時の当たり判定領域
+#define PLAYER_ORBITATTACK_ACCEL     (6.0f)                             // オービットアタック時の加速値
+#define PLAYER_ORBIT_UPVALUE         (1.0f)                             // １回の更新で回復する軌跡ゲージ量
+#define PLAYER_ORBIT_CUTVALUE        (0.5f)                             // １回の更新で減少する軌跡ゲージ量
+#define PLAYER_DASH_ACCEL            (5.5f)                             // ダッシュ時の加速値
 
 // 攻撃用マクロ
 #define PLAYER_ATTACK_EFFECT_00      (12)                               // 攻撃のエフェクトを出すタイミング(1つ目)
@@ -65,21 +67,18 @@
 #define PLAYER_ATTACK_MOVE_03        (28)                               // 攻撃時に動き出すタイミング(4つ目)
 
 // ロックオン用マクロ
-#define PLAYER_LOCKON_POLY_PRIORITY (10)                                // ロックオンポリゴンの処理優先順位
-#define PLAYER_LOCKON_DISTANCE      (500.0f)                            // ロックオンを開始できる距離
-#define PLAYER_LOCKONPOLY_WIDTH     (30.0f)                             // ロックオンポリゴンの幅
-#define PLAYER_LOCKONPOLY_HEIGHT    (30.0f)                             // ロックオンポリゴンの高さ
+#define PLAYER_LOCKON_POLY_PRIORITY  (10)                               // ロックオンポリゴンの処理優先順位
+#define PLAYER_LOCKON_DISTANCE       (500.0f)                           // ロックオンを開始できる距離
+#define PLAYER_LOCKONPOLY_WIDTH      (30.0f)                            // ロックオンポリゴンの幅
+#define PLAYER_LOCKONPOLY_HEIGHT     (30.0f)                            // ロックオンポリゴンの高さ
 
 // 残像記憶用マクロ
-#define PLAYER_AFTERIMAGE_COLOR     (D3DXCOLOR(0.0f,0.0f,1.0f,1.0f))    // 残像の色
-#define PLAYER_AFTERIMAGE_SCALE     (D3DXVECTOR3(0.95f,0.95f,0.95f))    // 残像の大きさ
-#define PLAYER_AFTERIMAGE_SCALECUT  (0.05f)                             // 大きさを削る量
-#define PLAYER_AFTERIMAGE_ALPHACUT  (0.01f)                             // 透明度を削る量
-#define PLAYER_AFTERIMAGE_REDUP     (0.1f)                              // 赤色を増やす量
-#define PLAYER_AFTERIMAGE_GREENUP   (0.1f)                              // 緑を増やす量
-#define PLAYER_ORBIT_UPTIMING       (240)                               // 軌跡ゲージが回復するまでの時間
-#define PLAYER_ORBIT_UPVALUE        (0.7f)                              // １回の更新で回復する軌跡ゲージ量
-#define PLAYER_ORBIT_CUTVALUE       (0.2f)                              // １回の更新で減少する軌跡ゲージ量
+#define PLAYER_AFTERIMAGE_COLOR      (D3DXCOLOR(0.0f,0.0f,1.0f,1.0f))   // 残像の色
+#define PLAYER_AFTERIMAGE_SCALE      (D3DXVECTOR3(0.95f,0.95f,0.95f))   // 残像の大きさ
+#define PLAYER_AFTERIMAGE_SCALECUT   (0.05f)                            // 大きさを削る量
+#define PLAYER_AFTERIMAGE_ALPHACUT   (0.01f)                            // 透明度を削る量
+#define PLAYER_AFTERIMAGE_REDUP      (0.1f)                             // 赤色を増やす量
+#define PLAYER_AFTERIMAGE_GREENUP    (0.1f)                             // 緑を増やす量
 
 // 値読み込みをする際の目印となる文字列
 // 共通
@@ -164,13 +163,6 @@
 //*****************************************************************************
 //     静的メンバ変数宣言
 //*****************************************************************************
-D3DXVECTOR3 CPlayer::m_AvaterOffset[PLAYER_AVATAER_NUM]   // 分身のオフセット
-{
-	PLAYER_AVATEROFFSET_1,
-	PLAYER_AVATEROFFSET_2,
-	PLAYER_AVATEROFFSET_3,
-	PLAYER_AVATEROFFSET_4
-};
 
 //*****************************************************************************
 //     CPlayerManagerの処理
@@ -1253,9 +1245,6 @@ CPlayer::CPlayer(int nPriority, OBJTYPE objType) : CCharacter(nPriority, objType
 	m_nMaxLife = 0;                          // 体力の最大値
 	m_nLifeCounter = 0;                      // 体力の回復を管理するカウンター
 	m_nEffectCounter = 0;                    // エフェクトを出す間隔を管理するカウンター
-	m_nOrbitCounter = 0;                     // 軌跡ゲージを回復する間隔を管理するカウンター
-	m_nAvaterCounter = 0;                    // 分身が出てからの時間
-	m_nAvaterNum = 0;                        // 分身を出せる数
 	m_nDamageCounter = 0;                    // ダメージをくらってからの時間を管理するカウンター
 	m_fAccel = 0.0f;                         // 加速度
 	m_fInertia = 0.0f;                       // 慣性
@@ -1267,13 +1256,13 @@ CPlayer::CPlayer(int nPriority, OBJTYPE objType) : CCharacter(nPriority, objType
 	m_fMaxSpecial = 0.0f;                    // 必殺技ゲージの最大値
 	m_bJump = false;                         // ジャンプしているかどうか
 	m_bAction = false;                       // アクションしているかどうか
-	m_bOrbit = false;                        // 軌跡を出しているかどうか
 	m_pOrbitEffect = NULL;                   // 軌跡エフェクトクラスへのポインタ
 	m_pEffectManager = NULL;                 // エフェクト管轄クラスへのポインタ
 	m_pLifeGauge = NULL;                     // 体力ゲージクラスへのポインタ
 	m_pOrbitSlashGauge = NULL;               // 軌跡ゲージクラスへのポインタ
 	m_pSpecialGauge = NULL;                  // 必殺ゲージクラスへのポインタ
 	m_pLockOnPoly = NULL;                    // ロックオン用のポリゴンクラスへのポインタ
+	m_bOrbit = false;                        // 軌跡を出しているかどうか
 	m_bOrbitSlash = false;                   // 軌跡斬をするかどうか
 	m_bBooking = false;                      // アクションの予約が入っているかどうか
 	m_bInRiver = false;                      // 川に入っているかどうか
@@ -1282,18 +1271,13 @@ CPlayer::CPlayer(int nPriority, OBJTYPE objType) : CCharacter(nPriority, objType
 	m_bOracleAttack = false;                 // オラクルアタックをしているかどうか
 	m_bDamage = false;                       // ダメージをくらっているかどうか
 	m_nCurrentStack = 0;                     // 現在の残像記憶番号
+	m_bOrbitAttack = false;                  // オービットアタックをしているかどうか
 	for (int nCntImage = 0; nCntImage < PLAYER_AFTERIMAGE_NUM; nCntImage++)
 	{// 残像記憶量の分だけ繰り返し
 		m_AfterPos[nCntImage] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		m_AfterRot[nCntImage] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		m_AfterModelPos[nCntImage] = NULL;
 		m_AfterModelRot[nCntImage] = NULL;
-	}
-
-	for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-	{// 分身を出せる数だけ繰り返し
-		D3DXMatrixIdentity(&m_AvaterModelMtxWorld[nCntAvater]);
-		m_pOrbitEffectAvater[nCntAvater] = NULL;    // 軌跡エフェクトクラスへのポインタ
 	}
 }
 
@@ -1357,11 +1341,12 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nLife, CModel **apMo
 	SetMotionManager(pMotionManager);   // モーション管轄クラスへのポインタ
 	SetTextureManager(pTextureManager); // テクスチャ管轄クラスへのポインタ
 	SetAccel(fAccel);                   // 加速度
+	m_fAccelDef = fAccel;               // 加速度(デフォルト値)
 	SetInertia(fInertia);               // 慣性
 	SetGravity(fGravity);               // 重力
 	SetJumpPower(fJumpPower);           // ジャンプ力
 	SetRivisionRot(fRivisionRot);       // 向きを補正する倍率
-	SetOrbitSlash(fOrbitSlash);         // 現在の軌跡ゲージ量
+	SetOrbitSlash(0.0f);                // 現在の軌跡ゲージ量
 	m_fOrbitSlashDef = fOrbitSlash;     // 軌跡ゲージ量
 	m_fMaxSpecial = fMaxSpecial;        // 必殺技ゲージの最大値の最大値
 	SetColHeight(fColHeight);           // 当たり判定を取る高さ
@@ -1424,18 +1409,21 @@ HRESULT CPlayer::Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nLife, CModel **apMo
 		}
 	}
 
-	// 分身のオフセットを設定
-	m_AvaterOffset[0] = PLAYER_AVATEROFFSET_1;
-	m_AvaterOffset[1] = PLAYER_AVATEROFFSET_2;
-	m_AvaterOffset[2] = PLAYER_AVATEROFFSET_3;
-	m_AvaterOffset[3] = PLAYER_AVATEROFFSET_4;
-
 	// 影を作成する
 	CShadow *pShadow = CShadow::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.2f, 1.2f, 1.2f));
 	if (pShadow != NULL)
 	{
 		SetShadow(pShadow);
 	}
+
+	// 軌跡斬をする状態に
+	m_bOrbitSlash = true;
+
+	// レンダリング用のテクスチャを生成する
+	CreateTexture();
+
+	// レンダリング用の頂点バッファを生成する
+	CreateVertexBuff();
 
 	return S_OK;
 }
@@ -1450,14 +1438,6 @@ void CPlayer::Uninit(void)
 	{// メモリが確保されている
 		m_pOrbitEffect->Uninit();
 		m_pOrbitEffect = NULL;
-	}
-	for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-	{// 分身の数だけ繰り返し
-		if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-		{// メモリが確保されている
-			m_pOrbitEffectAvater[nCntAvater]->Uninit();
-			m_pOrbitEffectAvater[nCntAvater] = NULL;
-		}
 	}
 
 	// ロックオンのポリゴンを開放する
@@ -1508,7 +1488,8 @@ void CPlayer::Update(void)
 	// 前回の座標を保存
 	SetPosOld(GetPos());
 
-	if (m_State == STATE_ATTACK_3 && GetMotionManager()->GetAllCounter() >= 34 && GetMotionManager()->GetAllCounter() <= 47)
+	if (m_State == STATE_ATTACK_3 && GetMotionManager()->GetAllCounter() >= 34 && GetMotionManager()->GetAllCounter() <= 47
+		|| m_bOrbitAttack == true)
 	{// 最後の攻撃モーションかつこのモーションのカウンター内である
 		if (m_nCurrentStack >= PLAYER_AFTERIMAGE_NUM - 1)
 		{// まだスタック量がある
@@ -1548,6 +1529,9 @@ void CPlayer::Update(void)
 		}
 	}
 
+	// 軌跡斬をする状態に設定
+	m_bOrbitSlash = true;
+
 	if (m_State != STATE_LANDING && m_State != STATE_DAMAGE && m_State != STATE_ORACLEATTACK)
 	{// ダメージ状態でないかつ着地状態でないかつステップ状態でないかつ
 		if (m_bAction != true)
@@ -1568,7 +1552,7 @@ void CPlayer::Update(void)
 	Collision();
 
 	if (m_State != STATE_LANDING && m_State != STATE_DAMAGE && m_State != STATE_ORACLEATTACK)
-	{// 着地状態でないかつダメージ状態でないかつステップ状態でない
+	{// 着地状態でないかつダメージ状態でないかつ必殺状態でないかつ
 		if (CManager::GetMode() == CManager::MODE_GAME && CManager::GetGame()->GetState() == CGame::STATE_NORMAL
 			|| CManager::GetMode() == CManager::MODE_TUTORIAL && CManager::GetTutorial()->GetState() == CTutorial::STATE_NONE)
 		{// ゲーム中かチュートリアル画面中だったら
@@ -1586,53 +1570,6 @@ void CPlayer::Update(void)
 	if (GetMotionManager() != NULL)
 	{// モーション管理クラスが生成されている
 		GetMotionManager()->Update(GetModel());
-	}
-
-	// 軌跡ゲージを回復させる
-	if (m_fOrbitSlash < m_fOrbitSlashDef)
-	{// まだ軌跡ゲージが回復できる
-		m_nOrbitCounter++;
-		if (m_nOrbitCounter >= PLAYER_ORBIT_UPTIMING)
-		{// 回復するタイミングである
-			float fUpValue = PLAYER_ORBIT_UPVALUE;
-			m_fOrbitSlash += fUpValue;
-			if (m_fOrbitSlash >= m_fOrbitSlashDef)
-			{// デフォルトの軌跡ゲージ量を超えた
-				fUpValue = m_fOrbitSlash - m_fOrbitSlashDef;
-				m_fOrbitSlash = m_fOrbitSlashDef;
-			}
-			// ゲージを増やす
-			if (m_pOrbitSlashGauge != NULL)
-			{// 軌跡ゲージクラスが取得できている
-				m_pOrbitSlashGauge->AddGauge(fUpValue);
-			}
-		}
-	}
-
-	if (m_nAvaterNum >= 1)
-	{// 分身が1体以上出ている
-		m_nAvaterCounter++;
-		if (m_nAvaterCounter % PLAYER_AVATER_CUTTIMING == 0)
-		{// カウンターが既定の値に達した
-			m_nAvaterNum--;
-			if (m_nAvaterNum < 0)
-			{// これ以上数値を減らせない
-				m_nAvaterNum = 0;
-			}
-			else
-			{// 分身が減った
-				if (m_pEffectManager != NULL)
-				{// エフェクト管轄クラスへのポインタが取得できている
-					D3DXVECTOR3 EffectPos = GetPos() + m_AvaterOffset[m_nAvaterNum];
-					m_pEffectManager->SetEffect(D3DXVECTOR3(EffectPos.x, EffectPos.y + 40.0f, EffectPos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 28);
-				}
-				// SEを再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_AVATER_DELETE);
-
-				// カウンターを戻す
-				m_nAvaterCounter = 0;
-			}
-		}
 	}
 
 	if (CManager::GetMode() == CManager::MODE_TUTORIAL)
@@ -1661,6 +1598,41 @@ void CPlayer::Update(void)
 		}
 	}
 
+	if (m_bOrbitAttack == true)
+	{// オービットアタックをしていたら
+		m_fAccel = PLAYER_ORBITATTACK_ACCEL;
+		if (GetMotionManager() != NULL)
+		{// モーション管理クラスが生成されている
+			GetMotionManager()->Update(GetModel());
+		}
+
+		// 軌跡ゲージを減らす
+		if (m_pOrbitSlashGauge != NULL)
+		{
+			m_fOrbitSlash -= PLAYER_ORBIT_CUTVALUE;
+			if (m_fOrbitSlash <= 0.0f)
+			{
+				m_fOrbitSlash = 0.0f;
+				m_pOrbitSlashGauge->DeleteGauge();
+				m_bOrbitAttack = false;
+				m_fAccel = m_fAccelDef;
+			}
+			else
+			{
+				m_pOrbitSlashGauge->CutGauge(PLAYER_ORBIT_CUTVALUE);
+			}
+		}
+
+		// 当たり判定をする
+		AttackCollision(0, PLAYER_ORBITATTACK_RANGE, D3DXVECTOR3(0.0f, 0.0f, 0.0f), PLAYER_ORBITATTACK_DAMAGE);
+
+		// フィードバックエフェクトをかける
+		CManager::GetRenderer()->SetFeedBack(1, 1.0001f);
+
+		// エフェクトを出す
+		m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 15.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
+	}
+
 	// 影の座標をずらしておく
 	if (GetShadow() != NULL)
 	{// 影が生成されている
@@ -1672,6 +1644,21 @@ void CPlayer::Update(void)
 //    描画処理
 //=============================================================================
 void CPlayer::Draw(void)
+{
+	if (m_bOrbitAttack == true)
+	{
+		FeedBackDraw();
+	}
+	else
+	{
+		DefaultDraw();
+	}
+}
+
+//=============================================================================
+//    フィードバックエフェクトをかけるときの描画
+//=============================================================================
+void CPlayer::DefaultDraw(void)
 {
 	// 橋の下の描画時に必要
 	CModel **pModel = GetModel();                       // モデルクラスへのポインタ
@@ -1751,72 +1738,75 @@ void CPlayer::Draw(void)
 	{// 残像記憶が始まっている
 		DrawAfterImage();
 	}
-
-	// 分身を描画する
-	if (m_nAvaterNum > 0)
-	{// 分身の数が1体でもいる
-		DrawAvater();
-	}
 }
 
 //=============================================================================
-//    分身を描画する処理
+//    フィードバックエフェクトをかけるときの描画
 //=============================================================================
-void CPlayer::DrawAvater(void)
+void CPlayer::FeedBackDraw(void)
 {
-	// 分身描画に必要
-	D3DXVECTOR3 posDef = GetPos();                      // プレイヤーの座標(保存用)
-	D3DXVECTOR3 pos = GetPos();                         // 分身の座標
-	D3DXCOLOR ModelColorDef[4][PLAYER_MAX_MODELPARTS];  // モデルの色(保存用)
-	D3DXCOLOR ModelCol = PLAYER_AFTERIMAGE_COLOR;       // 分身のモデルの色
-	CModel **pModel = GetModel();                       // モデルクラスへのポインタ
-	LPD3DXBUFFER pBuffMat;                              // マテリアル情報へのポインタ
-	DWORD nNumMat;                                      // マテリアル情報の数
-	D3DXMATERIAL *pMat;                                 // マテリアルへのポインタ
+	// レンダリングクラスの取得
+	CRenderer *pRenderer = CManager::GetRenderer();
+	if (pRenderer != NULL)
+	{// レンダリングクラスが取得できた
+		LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();  	// デバイスの取得
+		if (pDevice != NULL)
+		{// デバイスが取得できた
+			DWORD Lighting;
+			D3DXMATRIX mtxViewOrg, mtxProjOrg;
+			D3DVIEWPORT9 ViewportOrg;
+			LPDIRECT3DSURFACE9 pRenderOrg = NULL;
+			LPDIRECT3DSURFACE9 pBuffOrg = NULL;
 
-	for (int nCntParts = 0; nCntParts < GetNumParts(); nCntParts++)
-	{// パーツ数だけ繰り返し
-		pBuffMat = pModel[nCntParts]->GetBuffMat();
-		nNumMat = pModel[nCntParts]->GetNumMat();
-		if (pBuffMat != NULL)
-		{// ポインタが取得できた
-			pMat = (D3DXMATERIAL*)pBuffMat->GetBufferPointer();
-			for (int nCntMat = 0; nCntMat < (int)nNumMat; nCntMat++)
-			{// マテリアル情報の数だけ繰り返し
-				ModelColorDef[nCntMat][nCntParts] = pMat[nCntMat].MatD3D.Diffuse;
-				pMat[nCntMat].MatD3D.Diffuse = ModelCol;
-			}
+			// 現在の情報を保存する
+			pDevice->GetRenderTarget(0, &pRenderOrg);
+			pDevice->GetDepthStencilSurface(&pBuffOrg);
+			pDevice->GetRenderState(D3DRS_LIGHTING, &Lighting);
+			pDevice->GetTransform(D3DTS_VIEW, &mtxViewOrg);
+			pDevice->GetTransform(D3DTS_PROJECTION, &mtxProjOrg);
+			pDevice->GetViewport(&ViewportOrg);
+
+			// レンダリング先を1枚目のテクスチャに設定
+			pDevice->SetRenderTarget(0, m_apRenderMT[0]);
+			pDevice->SetDepthStencilSurface(m_apBuffMT[0]);
+
+			// 1枚目のテクスチャをクリア
+			pDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL), D3DCOLOR_RGBA(0x00, 0x00, 0x00, 0x00), 1.0f, 0);
+
+			// 通常の描画をする
+			DefaultDraw();
+
+			// ライティングの設定を外す
+			pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+			// フィードバックをかける
+			FeedBackRender(pDevice);
+
+			// レンダリング先をバックバッファに設定
+			pDevice->SetRenderTarget(0, pRenderOrg);
+			pDevice->SetDepthStencilSurface(pBuffOrg);
+
+			// ポリゴンを描画
+			PolygonRender(pDevice);
+
+			// マトリックスの設定を戻す
+			pDevice->SetViewport(&ViewportOrg);
+			pDevice->SetTransform(D3DTS_VIEW, &mtxViewOrg);
+			pDevice->SetTransform(D3DTS_PROJECTION, &mtxProjOrg);
+
+			// ライティングの設定を戻す
+			pDevice->SetRenderState(D3DRS_LIGHTING, Lighting);
+
+			// 色を書き込まない設定に
+			pDevice->SetRenderState(D3DRS_COLORWRITEENABLE, 0x00000000);
+
+			// 通常の描画をする(Zバッファにのみ書き込みする)
+			DefaultDraw();
+
+			// 色を書き込む設定に
+			pDevice->SetRenderState(D3DRS_COLORWRITEENABLE, 0x0000000f);
 		}
 	}
-
-	// 分身を描画する
-	for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-	{// 現在の分身の数だけ繰り返し
-		pos += m_AvaterOffset[nCntAvater];
-		SetPos(pos);
-		CCharacter::Draw();
-		m_AvaterModelMtxWorld[nCntAvater] = pModel[13]->GetMtxWorld();
-		pos = posDef;
-	}
-
-	// デフォルトに戻しておく
-	SetPos(posDef);
-	SetMtxWorld(CManager::GetRenderer()->GetDevice());
-	for (int nCntParts = 0; nCntParts < GetNumParts(); nCntParts++)
-	{// パーツ数だけ繰り返し
-		pModel[nCntParts]->SetMtxWorld(CManager::GetRenderer()->GetDevice());
-		pBuffMat = pModel[nCntParts]->GetBuffMat();
-		nNumMat = pModel[nCntParts]->GetNumMat();
-		if (pBuffMat != NULL)
-		{// ポインタが取得できた
-			pMat = (D3DXMATERIAL*)pBuffMat->GetBufferPointer();
-			for (int nCntMat = 0; nCntMat < (int)nNumMat; nCntMat++)
-			{// マテリアル情報の数だけ繰り返し
-				pMat[nCntMat].MatD3D.Diffuse = ModelColorDef[nCntMat][nCntParts];
-			}
-		}
-	}
-
 }
 
 //=============================================================================
@@ -2344,17 +2334,6 @@ void CPlayer::Collision(void)
 										{//エフェクトを出すタイミングになった
 											m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, fRiverHeight + 2.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 13);
 											m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, fRiverHeight + 2.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 12);
-											if (m_nAvaterNum >= 1)
-											{// 分身が1体以上いる
-												D3DXVECTOR3 posDef = pos;
-												for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-												{// 現在の分身の数だけ繰り返し
-													pos += m_AvaterOffset[nCntAvater];
-													m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, fRiverHeight + 2.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 13);
-													m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, fRiverHeight + 2.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 12);
-													pos = posDef;
-												}
-											}
 										}
 									}
 									else
@@ -2362,16 +2341,6 @@ void CPlayer::Collision(void)
 										if (m_nEffectCounter % 30 == 0)
 										{//エフェクトを出すタイミングになった
 											m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, fRiverHeight + 2.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 12);
-											if (m_nAvaterNum >= 1)
-											{// 分身が1体以上いる
-												D3DXVECTOR3 posDef = pos;
-												for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-												{// 現在の分身の数だけ繰り返し
-													pos += m_AvaterOffset[nCntAvater];
-													m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, fRiverHeight + 2.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 12);
-													pos = posDef;
-												}
-											}
 										}
 									}
 									CDebugProc::Print("川に乗っている\n");
@@ -2500,14 +2469,6 @@ void CPlayer::Action(void)
 						m_pOrbitEffect->Uninit();
 						m_pOrbitEffect = NULL;
 					}
-					for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-					{
-						if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-						{
-							m_pOrbitEffectAvater[nCntAvater]->Uninit();
-							m_pOrbitEffectAvater[nCntAvater] = NULL;
-						}
-					}
 
 					// ジャンプ量を加えジャンプしている判定にする
 					m_Move.y += m_fJumpPower;
@@ -2525,7 +2486,7 @@ void CPlayer::Action(void)
 	}
 	else if (pKeyboard->GetTrigger(DIK_SPACE) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_3) == true)
 	{// アクションボタンが押された
-		if (m_bAction == false)
+		if (m_bAction == false && m_bOrbitAttack != true)
 		{// アクションをしていない
 			if (m_State == STATE_MOVE)
 			{// 動いている状態だったら
@@ -2549,14 +2510,6 @@ void CPlayer::Action(void)
 				m_pOrbitEffect->Uninit();
 				m_pOrbitEffect = NULL;
 			}
-			for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-			{
-				if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-				{
-					m_pOrbitEffectAvater[nCntAvater]->Uninit();
-					m_pOrbitEffectAvater[nCntAvater] = NULL;
-				}
-			}
 		}
 		else
 		{// 攻撃をすでに行っている
@@ -2574,14 +2527,6 @@ void CPlayer::Action(void)
 						m_bOrbit = false;
 						m_pOrbitEffect->Uninit();
 						m_pOrbitEffect = NULL;
-					}
-					for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-					{
-						if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-						{
-							m_pOrbitEffectAvater[nCntAvater]->Uninit();
-							m_pOrbitEffectAvater[nCntAvater] = NULL;
-						}
 					}
 
 					// モーションを切り替える
@@ -2602,88 +2547,12 @@ void CPlayer::Action(void)
 	{// ロックオンボタンが押された
 		LockOn();
 	}
-	else if (pKeyboard->GetTrigger(DIK_R) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_5) == true)
-	{// 軌跡斬切り替えボタンが押された
-		if (m_bAction != true)
-		{// アクションをしていない
-			if (m_fOrbitSlash >= 0.0f)
-			{// 軌跡ゲージがまだある
-				m_bOrbitSlash = m_bOrbitSlash ? false : true;
-				if (m_bOrbitSlash == true && m_fOrbitSlash > 0.0f)
-				{// 軌跡斬を出せる状態になった
-					// SEを再生
-					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_PLAYER_ORBITSLASH);
-				}
-			}
-		}
-	}
-	else if (pKeyboard->GetTrigger(DIK_N) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_6) == true)
-	{// 分身を増やすボタンが押された
-		if (m_bAction != true)
-		{// アクションをしていない
-			if (m_nLife > PLAYER_AVATER_LIFECUT)
-			{// 分身を出せる体力である
-				m_nAvaterNum++;
-				if (m_nAvaterNum > PLAYER_AVATAER_NUM)
-				{// これ以上分身は出せない
-					m_nAvaterNum = PLAYER_AVATAER_NUM;
-				}
-				else
-				{// 分身を出せた
-					// 体力を削る
-					m_nLife -= PLAYER_AVATER_LIFECUT;
-
-					// 体力ゲージを減らす
-					if (m_pLifeGauge != NULL)
-					{
-						m_pLifeGauge->CutGauge(PLAYER_AVATER_LIFECUT);
-					}
-					if (m_pEffectManager != NULL)
-					{// エフェクト管轄クラスへのポインタが取得できている
-						D3DXVECTOR3 EffectPos = GetPos() + m_AvaterOffset[m_nAvaterNum - 1];
-						m_pEffectManager->SetEffect(EffectPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 26);
-						m_pEffectManager->SetEffect(D3DXVECTOR3(EffectPos.x, EffectPos.y + 10.0f, EffectPos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 27);
-					}
-
-					// SEを再生
-					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_AVATER_SPAWN);
-
-					// カウンターを戻す
-					m_nAvaterCounter = 0;
-				}
-			}
-		}
-	}
-	else if (pKeyboard->GetTrigger(DIK_M) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_7) == true)
-	{// 分身を減らすボタンが押された
-		if (m_bAction != true)
-		{// アクションをしていない
-			m_nAvaterNum--;
-			if (m_nAvaterNum < 0)
-			{// これ以上数値を減らせない
-				m_nAvaterNum = 0;
-			}
-			else
-			{// 分身が減った
-				if (m_pEffectManager != NULL)
-				{// エフェクト管轄クラスへのポインタが取得できている
-					D3DXVECTOR3 EffectPos = GetPos() + m_AvaterOffset[m_nAvaterNum];
-					m_pEffectManager->SetEffect(D3DXVECTOR3(EffectPos.x, EffectPos.y + 40.0f, EffectPos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 28);
-				}
-				// SEを再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_AVATER_DELETE);
-
-				// カウンターを戻す
-				m_nAvaterCounter = 0;
-			}
-		}
-	}
 	else if (pKeyboard->GetTrigger(DIK_B) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_1) == true)
 	{// オラクルアタックボタンが押された
 		if (m_fSpecial >= m_fMaxSpecial)
 		{// スペシャルゲージが満タンになっている
-			if (m_bAction != true && m_bJump != true)
-			{// アクションをしていないかつジャンプをしていない
+			if (m_bAction != true && m_bJump != true && m_bOrbitAttack != true)
+			{// アクションをしていないかつジャンプをしていないかつアバターアタックをしていない
 				// オラクルアタックをしている判定に
 				m_bOracleAttack = true;
 
@@ -2709,7 +2578,7 @@ void CPlayer::Action(void)
 			}
 		}
 	}
-	else if (pKeyboard->GetTrigger(DIK_LSHIFT) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_9) == true)
+	else if (pKeyboard->GetTrigger(DIK_RSHIFT) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_9) == true)
 	{// 視点リセットボタンが押された
 		D3DXVECTOR3 PlayerRot = GetRot();     // プレイヤーの向きを取得
 
@@ -2723,6 +2592,27 @@ void CPlayer::Action(void)
 		// カメラの向きをプレイヤーの正面方向に
 		pCamera->SetRotDest(D3DXVECTOR3(0.0f, PlayerRot.y, 0.0f));
 		pCamera->SetRotDiff(pCamera->GetRotDest() - pCamera->GetRot());
+	}
+	else if (pKeyboard->GetTrigger(DIK_N) == true || pJoyStick->GetTrigger(CJoyStick::DIJS_BUTTON_5) == true)
+	{// オービットアタックボタンが押された
+		if (m_bOrbitAttack != true)
+		{
+			SetOrbitAttack();
+		}
+	}
+	else if (pKeyboard->GetPress(DIK_LSHIFT) == true || pJoyStick->GetPress(CJoyStick::DIJS_BUTTON_6) == true)
+	{// ダッシュボタンが押された
+		if (m_bOrbitAttack != true)
+		{
+			m_fAccel = PLAYER_DASH_ACCEL;
+		}
+	}
+	else if (pKeyboard->GetRelease(DIK_LSHIFT) == true || pJoyStick->GetRelease(CJoyStick::DIJS_BUTTON_6) == true)
+	{// ダッシュボタンが離された
+		if (m_bOrbitAttack != true)
+		{
+			m_fAccel = m_fAccelDef;
+		}
 	}
 
 	if (m_bBooking == true)
@@ -2742,14 +2632,6 @@ void CPlayer::Action(void)
 					m_bOrbit = false;
 					m_pOrbitEffect->Uninit();
 					m_pOrbitEffect = NULL;
-				}
-				for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-				{
-					if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-					{
-						m_pOrbitEffectAvater[nCntAvater]->Uninit();
-						m_pOrbitEffectAvater[nCntAvater] = NULL;
-					}
 				}
 
 				// モーションを切り替える
@@ -2828,6 +2710,41 @@ void CPlayer::Action(void)
 			}
 		}
 	}
+
+
+	// デバッグコマンド
+	if (pKeyboard->GetTrigger(DIK_1) == true)
+	{
+		m_fSpecial = m_fMaxSpecial;
+		if (m_pSpecialGauge != NULL)
+		{// 必殺ゲージが取得できている
+			m_pSpecialGauge->MaxGauge();
+		}
+		// SEを再生
+		CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_PLAYER_MAXORACLE);
+	}
+	else if (pKeyboard->GetTrigger(DIK_2) == true)
+	{
+		m_fOrbitSlash = m_fOrbitSlashDef;
+		if (m_pOrbitSlashGauge != NULL)
+		{// 軌跡ゲージが取得できている
+			m_pOrbitSlashGauge->MaxGauge();
+		}
+	}
+}
+
+//=============================================================================
+//    オービットアタック状態に移行させる処理
+//=============================================================================
+void CPlayer::SetOrbitAttack(void)
+{
+	if (m_fOrbitSlash > m_fOrbitSlashDef / 2)
+	{// 軌跡ゲージがたまっている
+		m_bOrbitAttack = true;
+
+		// SEを再生
+		CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_PLAYER_ORBITSLASH);
+	}
 }
 
 //=============================================================================
@@ -2897,28 +2814,6 @@ void CPlayer::Statement(void)
 					m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 15.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 23);
 					m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 15.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 24);
 					m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 15.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 25);
-
-					if (m_nAvaterNum >= 1)
-					{// 分身が1体以上いる
-						D3DXVECTOR3 posDef = GetPos();   // プレイヤーの座標(保存用)
-						D3DXVECTOR3 pos = GetPos();      // 分身の座標(保存用)
-						for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-						{// 現在の分身の数だけ繰り返し
-							// 分身の位置にずらす
-							pos += m_AvaterOffset[nCntAvater];
-
-							// エフェクトを出す
-							m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 20);
-							m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 21);
-							m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 22);
-							m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 23);
-							m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 24);
-							m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 25);
-
-							// デフォルト値に戻す
-							pos = posDef;
-						}
-					}
 				}
 
 				if (GetMotionManager()->GetMotion()[m_State]->GetCollision() != NULL)
@@ -2941,38 +2836,6 @@ void CPlayer::Statement(void)
 						{// 当たり判定を発生させるタイミングならば
 						    // 攻撃時の当たり判定を発生させる
 							AttackCollision(nModelIdx, fRange, Offset, nDamage);
-
-							if (m_nAvaterNum >= 1)
-							{// 分身が1体以上いる
-								CModel **pModel = GetModel();    // モデルクラスへのポインタ
-								D3DXVECTOR3 posDef = GetPos();   // プレイヤーの位置(保存用)
-								D3DXVECTOR3 pos = GetPos();      // 分身の位置
-								for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-								{// 現在の分身の数だけ繰り返し
-									// 分身の位置を計算
-									pos += m_AvaterOffset[nCntAvater];
-									SetPos(pos);
-									SetMtxWorld(CManager::GetRenderer()->GetDevice());
-									for (int nCntParts = 0; nCntParts < GetNumParts(); nCntParts++)
-									{// パーツ数だけ繰り返し
-										pModel[nCntParts]->SetMtxWorld(CManager::GetRenderer()->GetDevice());
-									}
-
-									// 分身の当たり判定を開始
-									AttackCollision(nModelIdx, fRange, Offset, nDamage);
-
-									// デフォルト値に戻す
-									pos = posDef;
-								}
-
-								// デフォルトの値に戻す
-								SetPos(posDef);
-								SetMtxWorld(CManager::GetRenderer()->GetDevice());
-								for (int nCntParts = 0; nCntParts < GetNumParts(); nCntParts++)
-								{// パーツ数だけ繰り返し
-									pModel[nCntParts]->SetMtxWorld(CManager::GetRenderer()->GetDevice());
-								}
-							}
 						}
 
 						// SEを再生
@@ -3052,15 +2915,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
 						CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GRASS);
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
-								pos = posDef;
-							}
-						}
 					}
 
 					if (m_bOrbitSlash == true)
@@ -3069,17 +2923,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 14);
 						m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 30.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 14);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 30.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								pos = posDef;
-							}
-						}
 
 						// フィードバックエフェクトをかける
 						CManager::GetRenderer()->SetFeedBack(15, 0.9999f);
@@ -3165,15 +3008,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
 						CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GRASS);
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
-								pos = posDef;
-							}
-						}
 					}
 
 					if (m_bOrbitSlash == true)
@@ -3182,18 +3016,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 14);
 						m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 30.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-
-
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 14);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 30.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								pos = posDef;
-							}
-						}
 
 						// フィードバックエフェクトをかける
 						CManager::GetRenderer()->SetFeedBack(15, 0.9999f);
@@ -3278,15 +3100,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
 						CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GRASS);
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
-								pos = posDef;
-							}
-						}
 					}
 
 					if (m_bOrbitSlash == true)
@@ -3295,17 +3108,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 14);
 						m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 30.0f, GetPos().z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 14);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 30.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								pos = posDef;
-							}
-						}
 
 						// フィードバックエフェクトをかける
 						CManager::GetRenderer()->SetFeedBack(15, 0.9999f);
@@ -3393,15 +3195,6 @@ void CPlayer::Statement(void)
 						D3DXVECTOR3 pos = GetPos();
 						m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
 						CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GRASS);
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 31);
-								pos = posDef;
-							}
-						}
 					}
 
 					if (m_bOrbitSlash == true)
@@ -3417,25 +3210,6 @@ void CPlayer::Statement(void)
 						m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 90.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
 						m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 105.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
 						m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 120.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-
-
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								pos += m_AvaterOffset[nCntAvater];
-								m_pEffectManager->SetEffect(pos + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 11);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 15.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 30.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 45.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 60.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 75.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 90.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 105.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								m_pEffectManager->SetEffect(D3DXVECTOR3(pos.x, pos.y + 120.0f, pos.z) + (m_Move * 3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 15);
-								pos = posDef;
-							}
-						}
 
 						// フィードバックエフェクトをかける
 						CManager::GetRenderer()->SetFeedBack(30, 0.995f);
@@ -3486,38 +3260,6 @@ void CPlayer::Statement(void)
 					{// 当たり判定を発生させるタイミングならば
 						// 攻撃時の当たり判定を発生させる
 						AttackCollision(nModelIdx, fRange, Offset, nDamage);
-
-						if (m_nAvaterNum >= 1)
-						{// 分身が1体以上いる
-							CModel **pModel = GetModel();
-							D3DXVECTOR3 posDef = GetPos();
-							D3DXVECTOR3 pos = GetPos();
-							for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-							{// 現在の分身の数だけ繰り返し
-								// 分身の位置を計算
-								pos += m_AvaterOffset[nCntAvater];
-								SetPos(pos);
-								SetMtxWorld(CManager::GetRenderer()->GetDevice());
-								for (int nCntParts = 0; nCntParts < GetNumParts(); nCntParts++)
-								{// パーツ数だけ繰り返し
-									pModel[nCntParts]->SetMtxWorld(CManager::GetRenderer()->GetDevice());
-								}
-
-								// 分身の当たり判定開始
-								AttackCollision(nModelIdx, fRange, Offset, nDamage);
-
-								// デフォルト値に戻す
-								pos = posDef;
-							}
-
-							// デフォルトの値に戻す
-							SetPos(posDef);
-							SetMtxWorld(CManager::GetRenderer()->GetDevice());
-							for (int nCntParts = 0; nCntParts < GetNumParts(); nCntParts++)
-							{// パーツ数だけ繰り返し
-								pModel[nCntParts]->SetMtxWorld(CManager::GetRenderer()->GetDevice());
-							}
-						}
 					}
 				}
 			}
@@ -3549,17 +3291,6 @@ void CPlayer::Statement(void)
 							{// 軌跡を生成できた
 								m_pOrbitEffect->BindTexture(GetTextureManager()->GetTexture(nTexIdx));
 							}
-							if (m_nAvaterNum >= 1)
-							{// 分身が１体以上出ている
-								for (int nCntAvater = 0; nCntAvater < m_nAvaterNum; nCntAvater++)
-								{// 現在の分身の数だけ繰り返し
-									m_pOrbitEffectAvater[nCntAvater] = COrbitEffect::Create(OffSetPos1, OffSetPos2, OffSetAmp1, OffSetAmp2, ColUp, ColDown, fAlphaDecayUp, fAlphaDecayDown, nXBlock, nYBlock, &m_AvaterModelMtxWorld[nCntAvater], EFFECT_PRIORITY);
-									if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-									{// 軌跡を生成できた
-										m_pOrbitEffectAvater[nCntAvater]->BindTexture(GetTextureManager()->GetTexture(nTexIdx));
-									}
-								}
-							}
 							m_bOrbit = true;
 						}
 					}
@@ -3571,14 +3302,6 @@ void CPlayer::Statement(void)
 						m_bOrbit = false;
 						m_pOrbitEffect->Uninit();
 						m_pOrbitEffect = NULL;
-					}
-					for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-					{// 分身を出せる数だけ繰り返し
-						if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-						{
-							m_pOrbitEffectAvater[nCntAvater]->Uninit();
-							m_pOrbitEffectAvater[nCntAvater] = NULL;
-						}
 					}
 				}
 			}
@@ -3597,14 +3320,6 @@ void CPlayer::Statement(void)
 					m_pOrbitEffect->Uninit();
 					m_pOrbitEffect = NULL;
 				}
-				for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-				{// 分身を出せる数だけ繰り返し
-					if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-					{
-						m_pOrbitEffectAvater[nCntAvater]->Uninit();
-						m_pOrbitEffectAvater[nCntAvater] = NULL;
-					}
-				}
 
 				// モーション切り替え処理
 				GetMotionManager()->SwitchMotion(GetModel(), m_State);
@@ -3618,28 +3333,6 @@ void CPlayer::Statement(void)
 		{// ロックオン対象の敵クラスへのポインタとロックオンポリゴンへのポインタが取得できている
 			D3DXVECTOR3 LocOnPolyPos = D3DXVECTOR3(m_pLockOnEnemy->GetPos().x, m_pLockOnEnemy->GetPos().y + PLAYER_LOCKONPOLY_HEIGHT, m_pLockOnEnemy->GetPos().z);
 			m_pLockOnPoly->SetPos(LocOnPolyPos);
-		}
-	}
-
-	if (m_bOrbitSlash == true)
-	{// 軌跡斬をする状態ならば
-		m_fOrbitSlash -= PLAYER_ORBIT_CUTVALUE;
-		m_nOrbitCounter = 0;
-		if (m_fOrbitSlash <= 0.0f)
-		{// 軌跡ゲージ量がなくなった
-			m_fOrbitSlash = 0.0f;
-			m_bOrbitSlash = false;
-			if (m_pOrbitSlashGauge != NULL)
-			{// メモリが確保できている
-				m_pOrbitSlashGauge->DeleteGauge();
-			}
-		}
-		else
-		{// まだ軌跡ゲージ量がある
-			if (m_pOrbitSlashGauge != NULL)
-			{// メモリが確保できている
-				m_pOrbitSlashGauge->CutGauge(PLAYER_ORBIT_CUTVALUE);
-			}
 		}
 	}
 }
@@ -3696,18 +3389,6 @@ bool CPlayer::AttackCollision(int nModelIdx, float fRange, D3DXVECTOR3 Offset, i
 		if (m_bOrbitSlash == true)
 		{// 軌跡斬をしていたら
 			nDamage += 6;
-		}
-	}
-
-	if (m_nAvaterNum >= 1)
-	{// 分身が1体以上出ている
-		if (m_bOrbitSlash == true)
-		{// 軌跡斬を出す状態である
-			nDamage += m_nAvaterNum;
-		}
-		else
-		{// 軌跡斬を出す状態でない
-			nDamage += (m_nAvaterNum / 2) / 2;
 		}
 	}
 
@@ -3771,6 +3452,24 @@ bool CPlayer::AttackCollision(int nModelIdx, float fRange, D3DXVECTOR3 Offset, i
 							m_pEffectManager->SetEffect(EffectPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffectManager::EFFECT_TYPE_SLASHPAR);
 							m_pEffectManager->SetEffect(EffectPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 9);
 							bDeath = pEnemy->Hit(nDamage);
+
+							// 軌跡ゲージを増やす
+							if (m_bOrbitAttack != true)
+							{
+								if (m_pOrbitSlashGauge != NULL)
+								{
+									m_fOrbitSlash += PLAYER_ORBIT_UPVALUE;
+									if (m_fOrbitSlash >= m_fOrbitSlashDef)
+									{
+										m_fOrbitSlash = m_fOrbitSlashDef;
+										m_pOrbitSlashGauge->MaxGauge();
+									}
+									else
+									{
+										m_pOrbitSlashGauge->AddGauge(PLAYER_ORBIT_UPVALUE);
+									}
+								}
+							}
 
 							// SEを再生
 							if (m_bOrbitSlash != true)
@@ -3919,11 +3618,6 @@ void CPlayer::CreateEffect(void)
 			}
 		}
 
-		if (m_bOrbitSlash == true)
-		{// 軌跡斬をする状態である
-			m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 5.0f, GetPos().z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 0);
-		}
-
 		if (m_fSpecial >= m_fMaxSpecial)
 		{// 必殺技ゲージが貯まっている
 			m_pEffectManager->SetEffect(D3DXVECTOR3(GetPos().x, GetPos().y + 5.0f, GetPos().z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 29);
@@ -3968,12 +3662,6 @@ void CPlayer::Damage(int nDamage)
 
 		if (m_State != STATE_ORACLEATTACK)
 		{// オラクルアタック中でなければ
-			// 分身の数だけダメージを大きくする
-			if (m_nAvaterNum >= 1)
-			{// 分身が1体以上出ている
-				nDamage += m_nAvaterNum + (m_nAvaterNum / 2);
-			}
-
 			// 体力を減らす
 			m_nLife -= nDamage;
 
@@ -4036,14 +3724,6 @@ void CPlayer::Damage(int nDamage)
 					m_pOrbitEffect->Uninit();
 					m_pOrbitEffect = NULL;
 				}
-				for (int nCntAvater = 0; nCntAvater < PLAYER_AVATAER_NUM; nCntAvater++)
-				{// 分身を出せる数だけ繰り返し
-					if (m_pOrbitEffectAvater[nCntAvater] != NULL)
-					{
-						m_pOrbitEffectAvater[nCntAvater]->Uninit();
-						m_pOrbitEffectAvater[nCntAvater] = NULL;
-					}
-				}
 
 				// SEを再生
 				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_PLAYER_DAMAGE000);
@@ -4099,7 +3779,7 @@ void CPlayer::LockOn(void)
 				    // ロックオンを開始する
 					m_bLockOn = true;
 					D3DXVECTOR3 LocOnPolyPos = D3DXVECTOR3(m_pLockOnEnemy->GetPos().x, m_pLockOnEnemy->GetPos().y + PLAYER_LOCKONPOLY_HEIGHT, m_pLockOnEnemy->GetPos().z);
-					m_pLockOnPoly = CSceneBillboard::Create(LocOnPolyPos, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), 0.0f, PLAYER_LOCKONPOLY_WIDTH, PLAYER_LOCKONPOLY_HEIGHT, false, PLAYER_LOCKON_POLY_PRIORITY);
+					m_pLockOnPoly = CLockOnPoly::Create(LocOnPolyPos, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), PLAYER_LOCKONPOLY_WIDTH, PLAYER_LOCKONPOLY_HEIGHT, 0.0f, false, PLAYER_LOCKON_POLY_PRIORITY);
 					if (m_pLockOnPoly != NULL)
 					{// メモリが確保できた
 						m_pLockOnPoly->BindTexture(GetTextureManager()->GetTexture(2));
@@ -4471,4 +4151,298 @@ CEnemy *CPlayer::GetLockOnEnemy(void)
 bool CPlayer::GetDamage(void)
 {
 	return m_bDamage;
+}
+
+//=============================================================================
+//    レンダリング用のテクスチャを作成する処理
+//=============================================================================
+void CPlayer::CreateTexture(void)
+{
+	// レンダリングクラスの取得
+	CRenderer *pRenderer = CManager::GetRenderer();
+	if (pRenderer != NULL)
+	{// レンダリングクラスが取得できた
+		LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();  	// デバイスの取得
+		if (pDevice != NULL)
+		{// デバイスが取得できた
+			LPDIRECT3DSURFACE9 pRenderOrg = NULL;
+			LPDIRECT3DSURFACE9 pBuffOrg = NULL;
+
+			// デフォルト値を保存
+			pDevice->GetRenderTarget(0, &pRenderOrg);
+			pDevice->GetDepthStencilSurface(&pBuffOrg);
+
+			// 描画領域を設定
+			m_ViewportMT.X = 0;
+			m_ViewportMT.Y = 0;
+			m_ViewportMT.Width = SCREEN_WIDTH;
+			m_ViewportMT.Height = SCREEN_HEIGHT;
+			m_ViewportMT.MinZ = 0.0f;
+			m_ViewportMT.MaxZ = 1.0f;
+
+			for (int nCntTex = 0; nCntTex < MAX_RENDERER_TEXTURE; nCntTex++)
+			{
+				// レンダリング用のテクスチャを作成
+				pDevice->CreateTexture(SCREEN_WIDTH, SCREEN_HEIGHT, 1,
+					D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_apTextureMT[nCntTex], NULL);
+
+				// テクスチャのサーフェイス情報を取得
+				m_apTextureMT[nCntTex]->GetSurfaceLevel(0, &m_apRenderMT[nCntTex]);
+
+				// テクスチャにレンダリングするときに使うバッファを生成
+				pDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT,
+					D3DFMT_D24S8, D3DMULTISAMPLE_NONE, 0, TRUE, &m_apBuffMT[nCntTex], NULL);
+
+				// テクスチャのサーフェイス情報を設定
+				pDevice->SetRenderTarget(0, m_apRenderMT[nCntTex]);
+				pDevice->SetDepthStencilSurface(m_apBuffMT[nCntTex]);
+
+				// サーフェイス情報をクリアする
+				pDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(0x00, 0x00, 0x00, 0x00), 1.0f, 0);
+			}
+
+			// デフォルト値に戻す
+			pDevice->SetRenderTarget(0, pRenderOrg);
+			pDevice->SetDepthStencilSurface(pBuffOrg);
+		}
+	}
+}
+
+//=============================================================================
+//    レンダリング用の3Dポリゴンを作成する処理
+//=============================================================================
+void CPlayer::CreateVertexBuff(void)
+{
+	// レンダリングクラスの取得
+	CRenderer *pRenderer = CManager::GetRenderer();
+	if (pRenderer != NULL)
+	{// レンダリングクラスが取得できた
+		LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();  	// デバイスの取得
+		if (pDevice != NULL)
+		{// デバイスが取得できた
+		    // 頂点バッファを生成
+			pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
+				D3DUSAGE_WRITEONLY,
+				FVF_VERTEX_3D,
+				D3DPOOL_MANAGED,
+				&m_pVtxBuff,
+				NULL);
+
+			// 頂点情報
+			VERTEX_3D *pVtx;
+
+			// 頂点バッファをロックし,頂点データへのポインタを取得
+			m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+			// 頂点座標
+			pVtx[0].pos = D3DXVECTOR3(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 6.0f);
+			pVtx[1].pos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 6.0f);
+			pVtx[2].pos = D3DXVECTOR3(-SCREEN_WIDTH / 2, -SCREEN_HEIGHT / 2, 6.0f);
+			pVtx[3].pos = D3DXVECTOR3(SCREEN_WIDTH / 2, -SCREEN_HEIGHT / 2, 6.0f);
+
+			// 法線ベクトル
+			pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			pVtx[1].nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			pVtx[2].nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			// 頂点カラー
+			pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+			// テクスチャ座標
+			pVtx[0].tex = D3DXVECTOR2(0.0f - 0.00128f, 0.0f - 0.00072f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f - 0.00072f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f - 0.00128f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+			// 頂点バッファをアンロックする
+			m_pVtxBuff->Unlock();
+		}
+	}
+}
+
+//=============================================================================
+//    フィードバックエフェクトを描画する処理
+//=============================================================================
+void CPlayer::FeedBackRender(const LPDIRECT3DDEVICE9 pDevice)
+{
+	VERTEX_3D *pVtx;
+	D3DXMATRIX mtxRot, mtxTrans, mtxScale, mtxWorld;
+	D3DXMATRIX mtxView, mtxProj;
+
+	// 2枚目のテクスチャを1枚目に加算する形で描画
+	// ビューポート(描画領域)の設定
+	pDevice->SetViewport(&m_ViewportMT);
+
+	// プロジェクションマトリックスの初期化
+	D3DXMatrixIdentity(&mtxProj);
+
+	// プロジェクションマトリックスを作成
+	D3DXMatrixOrthoLH(&mtxProj,
+		(float)m_ViewportMT.Width,
+		(float)m_ViewportMT.Height,
+		1.0f,
+		25000.0f);
+
+	// プロジェクションマトリックスの設定
+	pDevice->SetTransform(D3DTS_PROJECTION, &mtxProj);
+
+	// ビューマトリックスの初期化
+	D3DXMatrixIdentity(&mtxView);
+
+	// ビューマトリックスを作成
+	D3DXMatrixLookAtLH(&mtxView,
+		&D3DXVECTOR3(0.0f, 0.0f, -1.0f),
+		&D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+		&D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+
+	// ビューマトリックスの設定
+	pDevice->SetTransform(D3DTS_VIEW, &mtxView);
+
+	// 3Dポリゴンを描画
+	// ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&mtxWorld);
+
+	// 大きさを反映
+	D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+
+	// 回転を反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTrans, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
+
+	// ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	// 頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
+
+	// 頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_3D);
+
+	// テクスチャの設定
+	pDevice->SetTexture(0, m_apTextureMT[1]);
+
+	// Zバッファをクリアする
+	pDevice->Clear(0, NULL, (D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(0x00, 0x00, 0x00, 0x00), 1.0f, 0);
+
+	// ライティングの設定を外す
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	// 頂点バッファをロックし,頂点データへのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点カラー
+	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.95f);
+	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.95f);
+	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.95f);
+	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.95f);
+
+	// 頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
+
+	// ポリゴンの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+}
+
+//=============================================================================
+//    レンダリング用のテクスチャを表示する処理
+//=============================================================================
+void CPlayer::PolygonRender(const LPDIRECT3DDEVICE9 pDevice)
+{
+	VERTEX_3D *pVtx;
+	D3DXMATRIX mtxRot, mtxTrans, mtxScale, mtxWorld;
+	D3DXMATRIX mtxView, mtxProj;
+
+	// 2枚目のテクスチャを1枚目に加算する形で描画
+	// ビューポート(描画領域)の設定
+	pDevice->SetViewport(&m_ViewportMT);
+
+	// プロジェクションマトリックスの初期化
+	D3DXMatrixIdentity(&mtxProj);
+
+	// プロジェクションマトリックスを作成
+	D3DXMatrixOrthoLH(&mtxProj,
+		(float)m_ViewportMT.Width,
+		(float)m_ViewportMT.Height,
+		1.0f,
+		25000.0f);
+
+	// プロジェクションマトリックスの設定
+	pDevice->SetTransform(D3DTS_PROJECTION, &mtxProj);
+
+	// ビューマトリックスの初期化
+	D3DXMatrixIdentity(&mtxView);
+
+	// ビューマトリックスを作成
+	D3DXMatrixLookAtLH(&mtxView,
+		&D3DXVECTOR3(0.0f, 0.0f, -1.0f),
+		&D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+		&D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+
+	// ビューマトリックスの設定
+	pDevice->SetTransform(D3DTS_VIEW, &mtxView);
+
+	// 3Dポリゴンを描画
+	// ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&mtxWorld);
+
+	// 回転を反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTrans, 0.0f, 0.0f, 0.0f);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTrans);
+
+	// ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	// 頂点バッファをデータストリームに設定
+	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
+
+	// 頂点フォーマットの設定
+	pDevice->SetFVF(FVF_VERTEX_3D);
+
+	// テクスチャの設定
+	pDevice->SetTexture(0, m_apTextureMT[0]);
+
+	// Zバッファを使用しない
+	pDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+
+	// 頂点バッファをロックし,頂点データへのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点カラー
+	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+	// 頂点バッファをアンロックする
+	m_pVtxBuff->Unlock();
+
+	// ポリゴンの描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	// Zバッファを使用する
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+
+	// テクスチャのポインタを入れ替える
+	LPDIRECT3DTEXTURE9 pTextureMTWk = m_apTextureMT[1];
+	LPDIRECT3DSURFACE9 pRenderMTWk = m_apRenderMT[1];
+	LPDIRECT3DSURFACE9 pBuffMTWk = m_apBuffMT[1];
+	m_apTextureMT[1] = m_apTextureMT[0];
+	m_apRenderMT[1] = m_apRenderMT[0];
+	m_apBuffMT[1] = m_apBuffMT[0];
+	m_apTextureMT[0] = pTextureMTWk;
+	m_apRenderMT[0] = pRenderMTWk;
+	m_apBuffMT[0] = pBuffMTWk;
 }

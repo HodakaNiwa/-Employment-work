@@ -2854,7 +2854,7 @@ void CBoss::Update(void)
 	if (GetDamage() == true)
 	{// ダメージをくらっていたら
 		m_nDamageCounter++;
-		if (m_nDamageCounter >= 50)
+		if (m_nDamageCounter >= 80)
 		{// ダメージ状態になってから一定時間がたった
 			m_nDamageCounter = 0;
 			SetDamage(false);

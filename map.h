@@ -19,8 +19,8 @@
 #define MOUNTAIN_PRIORITY  (2)   // 山の処理優先順位
 #define FIELD_PRIORITY     (2)   // 地面の処理優先順位
 #define BILLBOARD_PRIORITY (5)   // ビルボードの処理優先順位
-#define OBJECT_PRIORITY    (3)   // オブジェクトの処理優先順位
-#define WALL_PRIORITY      (5)   // 壁の処理優先順位
+#define OBJECT_PRIORITY    (5)   // オブジェクトの処理優先順位
+#define WALL_PRIORITY      (4)   // 壁の処理優先順位
 #define RIVER_PRIORITY     (5)   // 川の処理優先順位
 #define MAP_PRIORITY       (6)   // マップの処理優先順位
 

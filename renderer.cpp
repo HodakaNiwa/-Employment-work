@@ -15,7 +15,7 @@
 #include "game.h"
 #include "ui.h"
 #include "functionlib.h"
-
+#include "player.h"
 #include "debuglog.h"
 
 //*****************************************************************************
@@ -310,7 +310,7 @@ void CRenderer::TextureRender(void)
 		m_pD3DDevice->GetDepthStencilSurface(&pBuffOrg);
 		m_pD3DDevice->GetRenderState(D3DRS_LIGHTING, &Lighting);
 
-		// テクスチャのサーフェイス情報を設定
+		// レンダリング先を1枚目のテクスチャに設定
 		m_pD3DDevice->SetRenderTarget(0, m_apRenderMT[0]);
 		m_pD3DDevice->SetDepthStencilSurface(m_apBuffMT[0]);
 
@@ -681,40 +681,11 @@ void CRenderer::CreateVertexBuff(void)
 	// 頂点バッファをロックし,頂点データへのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	//// 頂点座標
-	//m_fWidth = SCREEN_WIDTH / 2;
-	//m_fHeight = SCREEN_HEIGHT / 2;
-
-	//// オフセットの長さを求める
-	//m_fLength = sqrtf((m_fWidth * m_fWidth) + (m_fHeight * m_fHeight));
-
-	//// オフセットの角度を求める
-	//m_fAngle = atan2f(m_fWidth, -m_fHeight);
-
-	//// 頂点の回転を考慮して座標を計算
-	//float XPos[4];
-	//float YPos[4];
-	//XPos[0] = CFunctionLib::RotationVectorX(0.0f, -sinf(m_fAngle) * m_fLength, cosf(m_fAngle) * m_fLength);
-	//YPos[0] = CFunctionLib::RotationVectorY(0.0f, -sinf(m_fAngle) * m_fLength, cosf(m_fAngle) * m_fLength);
-	//XPos[1] = CFunctionLib::RotationVectorX(0.0f, sinf(m_fAngle) * m_fLength, cosf(m_fAngle) * m_fLength);
-	//YPos[1] = CFunctionLib::RotationVectorY(0.0f, sinf(m_fAngle) * m_fLength, cosf(m_fAngle) * m_fLength);
-	//XPos[2] = CFunctionLib::RotationVectorX(0.0f, -sinf(m_fAngle) * m_fLength, -cosf(m_fAngle) * m_fLength);
-	//YPos[2] = CFunctionLib::RotationVectorY(0.0f, -sinf(m_fAngle) * m_fLength, -cosf(m_fAngle) * m_fLength);
-	//XPos[3] = CFunctionLib::RotationVectorX(0.0f, sinf(m_fAngle) * m_fLength, -cosf(m_fAngle) * m_fLength);
-	//YPos[3] = CFunctionLib::RotationVectorY(0.0f, sinf(m_fAngle) * m_fLength, -cosf(m_fAngle) * m_fLength);
-
-	//// 頂点座標
-	//for (int nCntVer = 0; nCntVer < 4; nCntVer++)
-	//{// 頂点の数だけ繰り返し
-	// //pVtx[nCntVer].pos = D3DXVECTOR3(XPos[nCntVer], -YPos[nCntVer], 0.0f);
-	//}
-
-
 	// 頂点座標
-	pVtx[0].pos = D3DXVECTOR3(-SCREEN_WIDTH / 2 - 0.5f, SCREEN_HEIGHT / 2 - 0.5f, 6.0f);
-	pVtx[1].pos = D3DXVECTOR3(SCREEN_WIDTH / 2 - 0.5f, SCREEN_HEIGHT / 2 - 0.5f, 6.0f);
-	pVtx[2].pos = D3DXVECTOR3(-SCREEN_WIDTH / 2 - 0.5f, -SCREEN_HEIGHT / 2 - 0.5f, 6.0f);
-	pVtx[3].pos = D3DXVECTOR3(SCREEN_WIDTH / 2 - 0.5f, -SCREEN_HEIGHT / 2 - 0.5f, 6.0f);
+	pVtx[0].pos = D3DXVECTOR3(-SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 6.0f);
+	pVtx[1].pos = D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 6.0f);
+	pVtx[2].pos = D3DXVECTOR3(-SCREEN_WIDTH / 2, -SCREEN_HEIGHT / 2, 6.0f);
+	pVtx[3].pos = D3DXVECTOR3(SCREEN_WIDTH / 2, -SCREEN_HEIGHT / 2, 6.0f);
 
 	// 法線ベクトル
 	pVtx[0].nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -729,9 +700,9 @@ void CRenderer::CreateVertexBuff(void)
 	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// テクスチャ座標
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[0].tex = D3DXVECTOR2(0.0f - 0.00128f, 0.0f - 0.00072f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f - 0.00072f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f - 0.00128f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	// 頂点バッファをアンロックする

@@ -202,6 +202,7 @@ public:    // 誰でもアクセス可能
 	void MakeVertex(const LPDIRECT3DDEVICE9 pDevice);
 	void CutGauge(const float fCutValue);
 	void AddGauge(const float fAddValue);
+	void MaxGauge(void);
 	void DeleteGauge(void);
 	void ChangeAlpha(const float fAlpha);
 
@@ -214,9 +215,13 @@ public:    // 誰でもアクセス可能
 protected: // このクラスと派生クラスだけがアクセス可能
 
 private:   // このクラスだけがアクセス可能
+	void GaugeFlash(const LPDIRECT3DVERTEXBUFFER9 pVtxBuff);
+
 	int             m_nCounter;      // ゲージの減らしを管理するカウンター
 	STATE           m_State;         // 状態
+	float           m_fMaxOrbit;     // 軌跡ゲージの最大値
 	float           m_fOrbitSlash;   // 軌跡ゲージ量
+	float           m_fFlashValue;   // 点滅に使用する値
 	CGauge2D        *m_pBlack2D;     // 軌跡ゲージの黒い部分用
 	CGauge2D        *m_pFrame2D;     // 軌跡ゲージのフレーム
 };
@@ -265,10 +270,13 @@ public:    // 誰でもアクセス可能
 protected: // このクラスと派生クラスだけがアクセス可能
 
 private:   // このクラスだけがアクセス可能
+	void GaugeFlash(const LPDIRECT3DVERTEXBUFFER9 pVtxBuff);
+
 	int             m_nCounter;      // ゲージの減らしを管理するカウンター
 	STATE           m_State;         // 状態
 	float           m_fMaxSpecial;   // 必殺ゲージの最大値
 	float           m_fSpecial;      // 必殺技ゲージ量
+	float           m_fFlashValue;   // 点滅に使用する値
 	CGauge2D        *m_pBlack2D;     // 必殺技ゲージの黒い部分用
 	CGauge2D        *m_pFrame2D;     // 必殺技ゲージのフレーム
 };

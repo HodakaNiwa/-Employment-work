@@ -55,6 +55,7 @@ public:    // 誰でもアクセス可能
 	void SetColRange(const float fColRange);
 	void SetHitAttack(const bool bHitAttack);
 	void SetHitCounter(const int nHitCounter);
+	void SetThin(const bool bThin);
 
 	COL_TYPE GetCollision(void);
 	int GetModelIdx(void) { return m_ModelIdx; };
@@ -63,6 +64,7 @@ public:    // 誰でもアクセス可能
 	D3DXVECTOR3 GetRotStd(void);
 	float GetColRange(void);
 	bool GetHitAttack(void);
+	bool GetThin(void);
 
 protected: // このクラスと派生クラスだけがアクセス可能
 
@@ -79,6 +81,7 @@ private:   // このクラスだけがアクセス可能
 	float       m_fColRange;    // 当たり判定の種類(円形の場合に使用)
 	bool        m_bHitAttack;   // 攻撃がヒットしたかどうか
 	int         m_nHitCounter;  // 攻撃がヒットしてからの時間
+	bool        m_bThin;        // 薄く描画するかどうか
 };
 
 //*****************************************************************************

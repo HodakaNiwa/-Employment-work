@@ -41,8 +41,7 @@ public:     // 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	void DrawUI_Purpose(void);
-	void SetFeedBack(int nFrame, float fScale = 0.95f, float fAlpha = 0.85f);
+	void SetFeedBack(int nFrame, float fScale = 0.995f, float fAlpha = 0.85f);
 
 	LPDIRECT3DDEVICE9 GetDevice(void);
 	void ReleasePause(void);

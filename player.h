@@ -18,7 +18,7 @@
 //*****************************************************************************
 #define PLAYER_PRIORITY       (4)  // プレイヤーの処理優先順位
 #define PLAYER_AFTERIMAGE_NUM (4)  // 残像を出せる数
-#define PLAYER_AVATAER_NUM    (4)  // 分身を出せる数
+#define MAX_PLAYER_TEXTURE    (2)  // レンダリングに使用するテクスチャの総数
 
 //*****************************************************************************
 //    前方宣言
@@ -33,7 +33,7 @@ class CEffectManager;
 class CGaugeLife2D;
 class CGaugeOrbitSlash2D;
 class CGaugeSpecial2D;
-class CSceneBillboard;
+class CLockOnPoly;
 class CEnemy;
 
 //*****************************************************************************
@@ -156,6 +156,7 @@ private:   // このクラスだけがアクセス可能
 	void Movement(void);
 	void Collision(void);
 	void Action(void);
+	void SetOrbitAttack(void);
 	void Statement(void);
 	void Landing(void);
 	bool AttackCollision(int nModelIdx, float fRange, D3DXVECTOR3 Offset, int nDamage);
@@ -163,17 +164,21 @@ private:   // このクラスだけがアクセス可能
 	void CalcOffsetRot(void);
 	void LockOn(void);
 	void DrawAfterImage(void);
-	void DrawAvater(void);
 	void StackAfterImage(void);
 
-	static D3DXVECTOR3 m_AvaterOffset[PLAYER_AVATAER_NUM];           // 分身のオフセット位置
+	void CreateTexture(void);
+	void CreateVertexBuff(void);
+	void DefaultDraw(void);
+	void FeedBackDraw(void);
+	void FeedBackRender(const LPDIRECT3DDEVICE9 pDevice);
+	void PolygonRender(const LPDIRECT3DDEVICE9 pDevice);
 
 	COrbitEffect       *m_pOrbitEffect;                              // 軌跡エフェクトクラスへのポインタ
 	CEffectManager     *m_pEffectManager;                            // エフェクト管轄クラスへのポインタ
 	CGaugeLife2D       *m_pLifeGauge;                                // 体力ゲージへのポインタ
 	CGaugeOrbitSlash2D *m_pOrbitSlashGauge;                          // 軌跡ゲージへのポインタ
 	CGaugeSpecial2D    *m_pSpecialGauge;                             // 必殺ゲージへのポインタ
-	CSceneBillboard    *m_pLockOnPoly;                               // ロックオン表示用ポリゴンクラスへのポインタ
+	CLockOnPoly        *m_pLockOnPoly;                               // ロックオン表示用ポリゴンクラスへのポインタ
 	CEnemy             *m_pLockOnEnemy;                              // ロックオン対象の敵クラスへのポインタ
 	STATE              m_State;                                      // 状態
 	D3DXVECTOR3        m_Move;                                       // 移動量
@@ -181,11 +186,9 @@ private:   // このクラスだけがアクセス可能
 	int                m_nMaxLife;                                   // 体力の最大値
 	int                m_nLifeCounter;                               // 体力の回復を管理するカウンター
 	int                m_nEffectCounter;                             // エフェクトを出す間隔を管理するカウンター
-	int                m_nOrbitCounter;                              // 軌跡ゲージを回復する間隔を管理するカウンター
-	int                m_nAvaterCounter;                             // 分身が出てからの秒数
-	int                m_nAvaterNum;                                 // 現在の分身の数
 	int                m_nDamageCounter;                             // ダメージを受けてからの時間を管理するカウンター
 	float              m_fAccel;                                     // 加速度
+	float              m_fAccelDef;                                  // 加速度(デフォルト値)
 	float              m_fInertia;                                   // 慣性
 	float              m_fJumpPower;                                 // ジャンプ量
 	float              m_fRivisionRot;                               // 向きを補正する倍率
@@ -203,6 +206,7 @@ private:   // このクラスだけがアクセス可能
 	bool               m_bLockOn;                                    // ロックオンしているかどうか
 	bool               m_bOracleAttack;                              // オラクルアタックをしているかどうか
 	bool               m_bDamage;                                    // ダメージを受けたかどうか
+	bool               m_bOrbitAttack;                               // オービットアタックをしているかどうか
 
 
 	// 残像記憶用変数
@@ -212,10 +216,12 @@ private:   // このクラスだけがアクセス可能
 	D3DXVECTOR3        *m_AfterModelRot[PLAYER_AFTERIMAGE_NUM];      // 残像記憶用のモデル向き
 	int                m_nCurrentStack;                              // 現在の残像記憶番号
 
-
-	// 分身攻撃用
-	COrbitEffect       *m_pOrbitEffectAvater[PLAYER_AVATAER_NUM];     // 分身用の軌跡エフェクトクラスへのポインタ
-	D3DXMATRIX         m_AvaterModelMtxWorld[PLAYER_AVATAER_NUM];     // 分身のワールドマトリックス(武器のみ)
+	// アバターアタック用変数
+	LPDIRECT3DTEXTURE9      m_apTextureMT[MAX_PLAYER_TEXTURE];       // テクスチャへのポインタ(このテクスチャにオブジェクトを描画する)
+	LPDIRECT3DSURFACE9      m_apRenderMT[MAX_PLAYER_TEXTURE];        // テクスチャに描画するためのインターフェイスへのポインタ
+	LPDIRECT3DSURFACE9      m_apBuffMT[MAX_PLAYER_TEXTURE];          // 各種バッファへのポインタ(テクスチャにレンダリングする際にZバッファを切り替えるため)
+	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;                              // 頂点バッファへのポインタ(オブジェクトを描画したテクスチャを使用する)
+	D3DVIEWPORT9            m_ViewportMT;                            // テクスチャレンダリング用の描画領域
 };
 
 #endif

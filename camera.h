@@ -30,6 +30,7 @@ public:    // 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	void SetCamera(void);
+	void SetDefaultPos(D3DXVECTOR3 DestPosR);
 
 	void SetPosV(const D3DXVECTOR3 posV);
 	void SetPosVDest(const D3DXVECTOR3 posVDest);
@@ -68,6 +69,7 @@ protected: // このクラスと派生クラスだけがアクセス可能
 private:   // このクラスだけがアクセス可能
 	bool FieldCollision(void);
 	bool WallCollision(void);
+	void ObjectCollision(void);
 	void Title(void);
 	void Tutorial(void);
 	void Game(void);

@@ -120,6 +120,7 @@ private:    // このクラスだけがアクセス可能
 	bool            m_bMapClear;                              // マップをクリアしたかどうか
 	bool            m_bMiniMapDisp;                           // ミニマップを描画するかどうか
 	CScene2D        *m_pPlayerPosition;                       // プレイヤーの座標を示す2Dポリゴン
+	CScene2D        *m_pDestPosition;                         // 目的値への向きを示す2Dポリゴン
 
 	// ボス出現演出用変数
 	CScene2D        *m_pBossAppearLogo[2];                    // ボス出現時に出す文字ポリゴン

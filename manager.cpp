@@ -56,7 +56,7 @@ CResult           *CManager::m_pResult = NULL;       // リザルトクラス型のポイン
 CRanking          *CManager::m_pRanking = NULL;      // ランキングクラス型のポインタ
 
 #ifdef _DEBUG
-CManager::MODE    CManager::m_Mode = MODE_GAME;     // 現在のモード
+CManager::MODE    CManager::m_Mode = MODE_GAME;      // 現在のモード
 #else
 CManager::MODE    CManager::m_Mode = MODE_TITLE;     // 現在のモード
 #endif

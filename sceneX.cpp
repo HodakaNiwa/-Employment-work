@@ -251,6 +251,27 @@ void CSceneX::BindModel(const LPD3DXMESH pMesh, const LPD3DXBUFFER pBuffMat, con
 }
 
 //=============================================================================
+//    モデルの透明度設定処理
+//=============================================================================
+void CSceneX::SetAlpha(float fAlpha)
+{
+	LPD3DXBUFFER pBuffMat = GetBuffMat();  // マテリアル情報へのポインタ
+	DWORD nNumMat = GetNumMat();           // マテリアル情報の数
+	D3DXMATERIAL *pMat;                    // マテリアルデータへのポインタ
+
+	if (pBuffMat != NULL)
+	{// マテリアル情報へのポインタが取得できた
+	 // マテリアルデータへのポインタを取得
+		pMat = (D3DXMATERIAL*)pBuffMat->GetBufferPointer();
+
+		for (int nCntMat = 0; nCntMat < (int)nNumMat; nCntMat++)
+		{// 設定されていたマテリアルの数だけ繰り返し
+			pMat[nCntMat].MatD3D.Diffuse.a = fAlpha;
+		}
+	}
+}
+
+//=============================================================================
 //    メッシュの頂点座標最小値設定処理
 //=============================================================================
 void CSceneX::SetMesh(const LPD3DXMESH pMesh)

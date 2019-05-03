@@ -44,6 +44,7 @@
 #define CAMERA_POSY_MIN              (50.0f)                 // カメラY座標の最小値
 
 // ゲーム中のカメラ用マクロ
+#define CAMERA_OBJECT_THINLENGTH     (2000.0f)               // 配置物を薄くするか判定する最大の距離
 #define CAMERA_ANGLEY_MIN            (-0.8f)                 // カメラ縦移動の角度最小値
 #define CAMERA_ANGLEY_MAX            (0.4f)                  // カメラ縦移動の角度最大値
 #define CAMERA_MOVESPEED_XZ          (0.2f)                  // カメラを動かした時の移動スピード(XZ平面)
@@ -53,6 +54,7 @@
 #define CAMERA_ROT_RIVISION_X        (0.45f)                 // カメラの向きを補正する倍率(X軸)
 #define CAMERA_ROT_RIVISION_Y        (0.45f)                 // カメラの向きを補正する倍率(Y軸)
 #define CAMERA_ROT_RIVISION_Z        (0.45f)                 // カメラの向きを補正する倍率(Z軸)
+#define CAMERA_POSV_FIELDUP          (50.0f)                 // カメラの高さを地面からどれだけ離すか
 
 // カメラのロックオン用マクロ
 #define CAMERA_LOCKON_POSV_UP        (70.0f)                 // カメラのロックオン最中に視点の高さを上げる補正値
@@ -64,7 +66,6 @@
 #define CAMERA_LOCK_ROTRIVISION_X    (1.0f)                  // ロックオン中にカメラの向きを補正する倍率(X軸)
 #define CAMERA_LOCK_ROTRIVISION_Y    (1.0f)                  // ロックオン中にカメラの向きを補正する倍率(Y軸)
 #define CAMERA_LOCK_ROTRIVISION_Z    (1.0f)                  // ロックオン中にカメラの向きを補正する倍率(Z軸)
-#define CAMERA_POSV_FIELDUP          (50.0f)                 // カメラの高さを地面からどれだけ離すか
 
 // 移動倍率マクロ
 #define CAMERA_ANGLE_MOVERIVISION_X  (0.000024f)             // カメラをゲームパッドで動かしたときの横移動の倍率
@@ -415,6 +416,31 @@ void CCamera::SetCamera(void)
 			pDevice->SetTransform(D3DTS_VIEW, &m_MtxView);
 		}
 	}
+}
+
+//=============================================================================
+//    カメラの位置をデフォルトに戻す処理
+//=============================================================================
+void CCamera::SetDefaultPos(D3DXVECTOR3 DestPosR)
+{
+	// 目的の注視点を設定
+	m_PosRDest = DestPosR;
+
+	// 注視点を少し上げる
+	m_PosRDest.y += CAMERA_POSY_UP;
+
+	// 視点の目的位置を計算する
+	m_PosVDest.x = m_PosRDest.x - sinf(m_Rot.y) * m_fLength;
+	m_PosVDest.y = m_PosRDest.y + sinf(m_Rot.z) * CAMERA_POSY_RANGE + CAMERA_POSY_MIN;
+	m_PosVDest.z = m_PosRDest.z - cosf(m_Rot.y) * m_fLength;
+
+	// 視点と注視点の位置を移動
+	m_PosR = m_PosRDest;
+	m_PosV = m_PosVOld = m_PosVDest;
+
+	// 差分をなくす
+	m_PosRDiff = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_PosVDiff = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //=============================================================================
@@ -801,6 +827,9 @@ void CCamera::Game(void)
 
 				// 壁との当たり判定
 				//WallCollision();
+
+				// 配置物との判定
+				ObjectCollision();
 			}
 			else if (m_pPlayer->GetLockOn() == true)
 			{// ロックオンをしている
@@ -849,6 +878,9 @@ void CCamera::Game(void)
 
 				// 壁との当たり判定
 				//WallCollision();
+
+				// 配置物との判定
+				ObjectCollision();
 			}
 		}
 	}
@@ -1143,8 +1175,8 @@ bool CCamera::FieldCollision(void)
 				fFieldHeightPosV = pField->GetPolyHeight(m_PosVDest, &bFieldLandPosV, &PolyNormal);
 				D3DXVECTOR3 VecA = m_PosVOld - D3DXVECTOR3(pField->GetPos().x, fFieldHeightPosV, pField->GetPos().z);
 				D3DXVec3Normalize(&VecA, &VecA);
-				CDebugProc::Print("%.3f %.3f %.3f\n", VecA.x, VecA.y, VecA.z);
-				if (VecA.y >= 0.0f && m_PosVDest.y < fFieldHeightPosV + CAMERA_POSV_FIELDUP)
+				//CDebugProc::Print("%.3f %.3f %.3f\n", VecA.x, VecA.y, VecA.z);
+				if (VecA.y >= 0.0f && m_PosVDest.y <= fFieldHeightPosV + CAMERA_POSV_FIELDUP)
 				{// 目的の視点位置が地面の高さより低くなってしまった
 					m_pLandScene = pField;
 					m_PosVDest.y = fFieldHeightPosV + CAMERA_POSV_FIELDUP;
@@ -1170,8 +1202,8 @@ bool CCamera::FieldCollision(void)
 					{// 地面の中にいると判定された
 						D3DXVECTOR3 VecA = m_PosVOld - D3DXVECTOR3(pField->GetPos().x, fFieldHeightPosV, pField->GetPos().z);
 						D3DXVec3Normalize(&VecA, &VecA);
-						//CDebugProc::Print("%.3f %.3f %.3f\n", VecA.x, VecA.y, VecA.z);
-						if (VecA.y >= 0.0f && m_PosVDest.y < fFieldHeightPosV + CAMERA_POSV_FIELDUP)
+						CDebugProc::Print("%.3f %.3f %.3f\n", VecA.x, VecA.y, VecA.z);
+						if (VecA.y >= 0.0f && m_PosVDest.y <= fFieldHeightPosV + CAMERA_POSV_FIELDUP)
 						{// 目的の視点位置が地面の高さより低くなってしまった
 							m_pLandScene = pField;
 							m_PosVDest.y = fFieldHeightPosV + CAMERA_POSV_FIELDUP;
@@ -1181,7 +1213,7 @@ bool CCamera::FieldCollision(void)
 							bFieldLandPosV = false;
 							if (m_PosVOld.y >= fFieldHeightPosV + CAMERA_POSV_FIELDUP  && m_PosVDest.y < fFieldHeightPosV + CAMERA_POSV_FIELDUP)
 							{// 目的の視点位置が地面の高さより低くなってしまった
-								m_PosVDest.y = fFieldHeightPosV + CAMERA_POSV_FIELDUP;
+								m_PosVDest.y = m_PosV.y = fFieldHeightPosV + CAMERA_POSV_FIELDUP;
 							}
 						}
 					}
@@ -1193,33 +1225,30 @@ bool CCamera::FieldCollision(void)
 
 
 	bFieldLandPosV = false;
-	for (int nCntPriority = 0; nCntPriority < EFFECT_PRIORITY; nCntPriority++)
-	{// 描画優先順位の数だけ繰り返し
-		pScene = CScene::GetTop(nCntPriority);
-		while (pScene != NULL)
-		{// メモリが空になるまで繰り返し
-			pSceneNext = pScene->GetNext();
-			if (pScene->GetObjType() == CScene::OBJTYPE_MESHFIELD)
-			{// 地面クラスへのポインタだったら
-				if (bFieldLandPosV != true)
-				{
-					pField = (CMeshField*)pScene;
-					if (pField != NULL)
-					{// 地面が取得できた
-						fFieldHeightPosV = pField->GetPolyHeight(m_PosVDest, &bFieldLandPosV, &PolyNormal);
-						if (bFieldLandPosV == true && pField->GetCulling() == false)
-						{// 地面の中にいると判定された
-							if (m_PosVOld.y - 20.0f <= fFieldHeightPosV && m_PosVDest.y >= fFieldHeightPosV)
-							{
-								m_PosVDest.y = fFieldHeightPosV;
-								m_Rot.z = m_RotOld.z;
-							}
+	pScene = CScene::GetTop(FIELD_PRIORITY);
+	while (pScene != NULL)
+	{// メモリが空になるまで繰り返し
+		pSceneNext = pScene->GetNext();
+		if (pScene->GetObjType() == CScene::OBJTYPE_MESHFIELD)
+		{// 地面クラスへのポインタだったら
+			if (bFieldLandPosV != true)
+			{
+				pField = (CMeshField*)pScene;
+				if (pField != NULL)
+				{// 地面が取得できた
+					fFieldHeightPosV = pField->GetPolyHeight(m_PosVDest, &bFieldLandPosV, &PolyNormal);
+					if (bFieldLandPosV == true && pField->GetCulling() == false)
+					{// 地面の中にいると判定された
+						if (m_PosVOld.y - 20.0f <= fFieldHeightPosV && m_PosVDest.y >= fFieldHeightPosV)
+						{
+							m_PosVDest.y = fFieldHeightPosV;
+							m_Rot.z = m_RotOld.z;
 						}
 					}
 				}
 			}
-			pScene = pSceneNext;
 		}
+		pScene = pSceneNext;
 	}
 
 	return bHit;
@@ -1232,10 +1261,9 @@ bool CCamera::WallCollision(void)
 {
 	bool bHit = false;   // 当たったかどうか
 
-	// 配置物と地面へのポインタ取得する
+	// 配置物と壁へのポインタ取得する
 	CScene *pScene = NULL;               // シーンクラスへのポインタ
 	CScene *pSceneNext = NULL;           // 次のシーンクラスへのポインタ
-	CMeshField *pField = NULL;           // 地面クラスへのポインタ
 	CMeshWall *pWall = NULL;             // 壁クラスへのポインタ
 
 	pScene = CScene::GetTop(WALL_PRIORITY);
@@ -1280,6 +1308,47 @@ bool CCamera::WallCollision(void)
 	}
 
 	return bHit;
+}
+
+//=============================================================================
+//    カメラとオブジェクトの距離を測る処理
+//=============================================================================
+void CCamera::ObjectCollision(void)
+{
+	// 配置物と配置物へのポインタ取得する
+	CScene *pScene = NULL;               // シーンクラスへのポインタ
+	CScene *pSceneNext = NULL;           // 次のシーンクラスへのポインタ
+	CObject *pObject = NULL;             // 配置物クラスへのポインタ
+
+	pScene = CScene::GetTop(OBJECT_PRIORITY);
+	while (pScene != NULL)
+	{// メモリが空になるまで繰り返し
+		pSceneNext = pScene->GetNext();
+		if (pScene->GetObjType() == CScene::OBJTYPE_OBJECT)
+		{// 配置物クラスへのポインタだったら
+			pObject = (CObject*)pScene;
+			if (pObject != NULL)
+			{// 配置物が取得できた
+				// 配置物との距離を測る
+				D3DXVECTOR3 ObjPos = pObject->GetPos();
+				float fObjLength = sqrtf((m_PosV.x - ObjPos.x) * (m_PosV.x - ObjPos.x) + (m_PosV.y - ObjPos.y) * (m_PosV.y - ObjPos.y) + (m_PosV.z - ObjPos.z) * (m_PosV.z - ObjPos.z));
+				if (fObjLength <= CAMERA_OBJECT_THINLENGTH && m_pPlayer != NULL)
+				{// 距離が一定以内である
+					D3DXVECTOR3 PlayerPos = m_pPlayer->GetPos();
+					float fPlayerLength = sqrtf((m_PosV.x - PlayerPos.x) * (m_PosV.x - PlayerPos.x) + (m_PosV.y - PlayerPos.y) * (m_PosV.y - PlayerPos.y) + (m_PosV.z - PlayerPos.z) * (m_PosV.z - PlayerPos.z));
+					if (fPlayerLength + 200.0f >= fObjLength)
+					{
+						pObject->SetThin(true);
+					}
+					else
+					{
+						pObject->SetThin(false);
+					}
+				}
+			}
+		}
+		pScene = pSceneNext;
+	}
 }
 
 //=============================================================================

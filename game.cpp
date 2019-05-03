@@ -27,6 +27,7 @@
 #include "grass.h"
 #include "boxCollider.h"
 #include "shadow.h"
+#include "object.h"
 
 //*****************************************************************************
 //    マクロ定義
@@ -47,6 +48,9 @@
 #define GAME_PLAYER_POSITION_WIDTH  (8.0f)                             // ミニマップに表示するプレイヤーの位置把握用ポリゴンの幅
 #define GAME_PLAYER_POSITION_HEIGHT (8.0f)                             // ミニマップに表示するプレイヤーの位置把握用ポリゴンの高さ
 
+#define GAME_DEST_POSITION_POS    (D3DXVECTOR3(1125.0f,10.0f,0.0f))    // ミニマップに表示する目的地把握用ポリゴンの座標
+#define GAME_DEST_POSITION_WIDTH  (6.0f)                               // ミニマップに表示する目的地把握用ポリゴンの幅
+#define GAME_DEST_POSITION_HEIGHT (6.0f)                               // ミニマップに表示する目的地把握用ポリゴンの高さ
 
 // 値を読み取るパス名
 #define NUM_TEXTURE                 "NUM_TEXTURE = "            // 読み込むテクスチャの数
@@ -135,6 +139,8 @@ CGame::CGame(int nPriority, OBJTYPE objType) : CScene(nPriority, objType)
 	m_nBossAppearCounter = 0;                   // ボス出現時の演出を管理するカウンター
 	m_nKnockDownCounter = 0;                    // ボス撃破時の演出を管理するカウンター
 	m_BossPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);  // ボスの座標(保存用)
+	m_pDestPosition = NULL;
+	m_pPlayerPosition = NULL;
 	for (int nCntAppear = 0; nCntAppear < 2; nCntAppear++)
 	{// ロゴを出す数だけ繰り返し
 		m_pBossAppearLogo[nCntAppear] = NULL;
@@ -480,6 +486,13 @@ HRESULT CGame::Init(void)
 						m_pPlayerPosition->BindTexture(m_pTextureManager->GetTexture(6));
 					}
 
+					// 目的地を表示するポリゴンを生成する
+					m_pDestPosition = CScene2D::Create(GAME_DEST_POSITION_POS, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), GAME_DEST_POSITION_WIDTH, GAME_DEST_POSITION_HEIGHT, 0.0f, GAME_POLYGON_PRIORITY);
+					if (m_pDestPosition != NULL)
+					{
+						m_pDestPosition->BindTexture(m_pTextureManager->GetTexture(20));
+					}
+
 					// 草の配置
 					LoadGrassTransform(pStrCur, pLine);
 
@@ -802,6 +815,11 @@ void CGame::SetMap(void)
 			m_pPlayerPosition->Uninit();
 			m_pPlayerPosition = NULL;
 		}
+		if (m_pDestPosition != NULL)
+		{// メモリが確保されている
+			m_pDestPosition->Uninit();
+			m_pDestPosition = NULL;
+		}
 	}
 
 	// マップの破棄
@@ -830,10 +848,14 @@ void CGame::SetMap(void)
 		SetBridgeCollider();
 	}
 
+	// 目的のUIを再表示
 	if (m_pUi != NULL)
 	{
 		m_pUi->ResetPurpose();
 	}
+
+	// カメラの位置を再設定
+	CManager::GetCamera()->SetDefaultPos(m_pMap->GetPlayerDefaultPos());
 
 	m_bMapClear = false;    // マップを未クリア状態にする
 }
@@ -879,8 +901,11 @@ void CGame::MiniMapDraw(void)
 				pDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL), D3DCOLOR_RGBA(0x00, 0x00, 0x00, 0x00), 1.0f, 0);
 
 				// マップを構成する要素を描画する
+				D3DXVECTOR3 GoalPos;
 				CScene *pScene = NULL;               // シーンクラスへのポインタ
 				CScene *pSceneNext = NULL;           // 次のシーンクラスへのポインタ
+				CObject *pObjcet = NULL;
+				CObjectGoal *pObjGoal = NULL;
 				for (int nCntPriority = 0; nCntPriority < MAX_PRIORITY_NUM; nCntPriority++)
 				{// 描画優先順位の数だけ繰り返し
 					pScene = CScene::GetTop(nCntPriority);
@@ -893,6 +918,18 @@ void CGame::MiniMapDraw(void)
 							|| pScene->GetObjType() == CScene::OBJTYPE_MOUNTAIN || pScene->GetObjType() == CScene::OBJTYPE_SKY || pScene->GetObjType() == CScene::OBJTYPE_PARTICLE
 							|| pScene->GetObjType() == CScene::OBJTYPE_RINGEFFECT || pScene->GetObjType() == CScene::OBJTYPE_MESHWALL || pScene->GetObjType() == CScene::OBJTYPE_RIVER)
 						{// マップを構成するオブジェクトだったら
+							if (pScene->GetObjType() == CScene::OBJTYPE_OBJECT)
+							{
+								pObjcet = (CObject*)pScene;
+								pObjcet->SetThin(false);
+								pObjcet->SetAlpha(1.0f);
+							}
+							else if (pScene->GetObjType() == CScene::OBJTYPE_OBJECTGOAL)
+							{
+								pObjGoal = (CObjectGoal*)pScene;
+								GoalPos = pObjGoal->GetPos();
+							}
+
 							pScene->Draw();
 						}
 						pScene = pSceneNext;
@@ -903,24 +940,18 @@ void CGame::MiniMapDraw(void)
 				{// メモリが確保されている
 					if (m_pPlayer != NULL)
 					{// プレイヤーが生成されている
-						DWORD Lighting;
-
-						// Zテストを無効にする
-						pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
-						// ライティングの設定
-						pDevice->GetRenderState(D3DRS_LIGHTING, &Lighting);
-						pDevice->SetRenderState(D3DRS_LIGHTING, false);
-
 						m_pPlayerPosition->SetRot(m_pPlayer->GetRot().y);
 						m_pPlayerPosition->Draw();
+					}
+				}
 
-						// Zテストを元の値に戻す
-						pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-						pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-
-						// ライティングを戻す
-						pDevice->SetRenderState(D3DRS_LIGHTING, Lighting);
+				if (m_pDestPosition != NULL)
+				{// メモリが確保されている
+					if (m_pPlayer != NULL)
+					{// プレイヤーが生成されている
+						float fRot = atan2f(m_pPlayer->GetPos().x - GoalPos.x, m_pPlayer->GetPos().z- GoalPos.z);
+						m_pDestPosition->SetRot(fRot);
+						m_pDestPosition->Draw();
 					}
 				}
 

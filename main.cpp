@@ -13,7 +13,7 @@
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"	                        // ウインドウのクラス名
 #define WINDOW_NAME		"棒人間のキセキ"                    // ウインドウのキャプション名
-#define WINDOW_MODE     (true)                              // ウィンドウのモード(falseにするとフルスクリーン)
+#define WINDOW_MODE     (false)                             // ウィンドウのモード(falseにするとフルスクリーン)
 #define WINDOW_ICON     (MAKEINTRESOURCE(IDI_ICON1))        // ウィンドウのアイコン識別子
 #define WINDOW_SM_ICON  (MAKEINTRESOURCE(IDI_ICON1))        // ウィンドウのスモールアイコン識別子
 

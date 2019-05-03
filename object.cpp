@@ -44,6 +44,7 @@ CObject::CObject(int nPriority, OBJTYPE objType) : CSceneX(nPriority, objType)
 	m_fColRange = 0.0f;                           // 当たり判定を取る範囲
 	m_bHitAttack = false;                         // 攻撃がヒットしたかどうか
 	m_nHitCounter = 0;                            // 攻撃がヒットしてからの時間
+	m_bThin = false;                              // 薄く描画するかどうか
 }
 
 //=============================================================================
@@ -96,6 +97,7 @@ HRESULT CObject::Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 scale, D3DXV
 	m_RollSpeed = RollSpeed;    // 回転するスピード
 	m_Collision = Collision;    // コリジョンの種類
 	m_fColRange = fColRange;    // 当たり判定を取る範囲(円形で当たり判定する場合に使用)
+	m_bThin = false;
 
 	// 共通の初期化処理
 	if (FAILED(CSceneX::Init()))
@@ -178,8 +180,18 @@ void CObject::Update(void)
 //=============================================================================
 void CObject::Draw(void)
 {
+	if (m_bThin == true)
+	{
+		SetAlpha(0.3f);
+	}
+
 	// 共通の描画処理
 	CSceneX::Draw();
+
+	if (m_bThin == true)
+	{
+		SetAlpha(1.0f);
+	}
 }
 
 //=============================================================================
@@ -635,6 +647,14 @@ void CObject::SetHitCounter(const int nHitCounter)
 }
 
 //=============================================================================
+//    配置物を薄く描画するかどうか設定処理
+//=============================================================================
+void CObject::SetThin(const bool bThin)
+{
+	m_bThin = bThin;
+}
+
+//=============================================================================
 //    配置物の当たり判定を取る種類処理
 //=============================================================================
 CObject::COL_TYPE CObject::GetCollision(void)
@@ -680,6 +700,14 @@ float CObject::GetColRange(void)
 bool CObject::GetHitAttack(void)
 {
 	return m_bHitAttack;
+}
+
+//=============================================================================
+//    配置物を薄く描画するかどうか取得処理
+//=============================================================================
+bool CObject::GetThin(void)
+{
+	return m_bThin;
 }
 
 //*****************************************************************************

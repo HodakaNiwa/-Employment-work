@@ -13,9 +13,15 @@
 //*****************************************************************************
 //     マクロ定義
 //*****************************************************************************
-#define GAUGE_LIFE_CUTTIMING     (60)    // 体力ゲージを減らしが始まるタイミング
-#define GAUGE_WIDTH_ADD          (42.0f) // ゲージの幅を削る割合
-#define SPECIALGAUGE_WIDTH_ADD   (30.0f) // 必殺技ゲージの幅を削る割合
+#define GAUGE_LIFE_CUTTIMING     (60)     // 体力ゲージを減らしが始まるタイミング
+#define GAUGE_WIDTH_ADD          (42.0f)  // ゲージの幅を削る割合
+#define SPECIALGAUGE_WIDTH_ADD   (30.0f)  // 必殺技ゲージの幅を削る割合
+
+#define GAUGE_FLASH_MAX          (1.0f)   // 点滅時の色の最大値
+#define GAUGE_FLASH_MIN          (0.0f)   // 点滅時の色の最小値
+
+#define ORBITGAUGE_FLASH_VALUE   (0.01f)  // 軌跡ゲージの点滅時の色変更値
+#define SPECIALGAUGE_FLASH_VALUE (0.017f) // 必殺技ゲージの点滅時の色変更値
 
 //*****************************************************************************
 //    静的メンバ変数宣言
@@ -1383,6 +1389,12 @@ HRESULT CGaugeOrbitSlash2D::Init(void)
 		}
 	}
 
+	// ゲージの幅をリセット
+	DeleteGauge();
+
+	// 点滅に使用する値を設定
+	m_fFlashValue = ORBITGAUGE_FLASH_VALUE;
+
 	return S_OK;
 }
 
@@ -1412,7 +1424,14 @@ void CGaugeOrbitSlash2D::Uninit(void)
 //=============================================================================
 void CGaugeOrbitSlash2D::Update(void)
 {
-
+	if (m_State == STATE_MAX)
+	{// ゲージが最大だったら
+		LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
+		if (pVtxBuff != NULL)
+		{
+			GaugeFlash(pVtxBuff);
+		}
+	}
 }
 
 //=============================================================================
@@ -1477,6 +1496,46 @@ void CGaugeOrbitSlash2D::MakeVertex(const LPDIRECT3DDEVICE9 pDevice)
 	// 各種値を格納しておく
 	SetLeftWidth(-GetWidth());                          // ゲージの左側オフセット
 	SetGaugeRate((GetWidth() * 2.0f) / m_fOrbitSlash);  // ゲージ一本分の割合
+	m_fMaxOrbit = m_fOrbitSlash;
+}
+
+//=============================================================================
+//    ゲージを点滅させる処理
+//=============================================================================
+void CGaugeOrbitSlash2D::GaugeFlash(const LPDIRECT3DVERTEXBUFFER9 pVtxBuff)
+{
+	D3DXCOLOR col = GetCol();
+
+	col.b += m_fFlashValue;
+
+	if (col.b >= GAUGE_FLASH_MAX)
+	{
+		col.b = GAUGE_FLASH_MAX;
+		m_fFlashValue *= -1;
+	}
+	else if (col.b <= GAUGE_FLASH_MIN)
+	{
+		col.b = GAUGE_FLASH_MIN;
+		m_fFlashValue *= -1;
+	}
+
+	// 頂点情報の設定
+	VERTEX_2D *pVtx;
+
+	// 頂点バッファをロックし,頂点データへのポインタを取得
+	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点カラー
+	pVtx[0].col = col;
+	pVtx[1].col = col;
+	pVtx[2].col = col;
+	pVtx[3].col = col;
+
+	// 頂点バッファをアンロックする
+	pVtxBuff->Unlock();
+
+	// 色の設定
+	SetCol(col);
 }
 
 //=============================================================================
@@ -1491,6 +1550,11 @@ void CGaugeOrbitSlash2D::CutGauge(const float fCutValue)
 	float fWidth = GetWidth();  // 幅
 	fWidth -= GetGaugeRate() * fCutValue;
 	SetWidth(fWidth);
+
+	// ゲージの色を戻す
+	D3DXCOLOR col = GetCol();
+	col.b = 0.0f;
+	SetCol(col);
 
 	// ポリゴンの幅を減らす
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
@@ -1507,6 +1571,12 @@ void CGaugeOrbitSlash2D::CutGauge(const float fCutValue)
 		pVtx[1].pos = D3DXVECTOR3(GetWidth(), -GetHeight(), 0.0f) + GetPos();
 		pVtx[2].pos = D3DXVECTOR3(GetLeftWidth() + GAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
 		pVtx[3].pos = D3DXVECTOR3(GetWidth() + GAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
+
+		// 頂点カラー
+		pVtx[0].col = col;
+		pVtx[1].col = col;
+		pVtx[2].col = col;
+		pVtx[3].col = col;
 
 		// 頂点バッファをアンロックする
 		pVtxBuff->Unlock();
@@ -1545,6 +1615,38 @@ void CGaugeOrbitSlash2D::AddGauge(const float fAddValue)
 }
 
 //=============================================================================
+//    ゲージを最大にする処理
+//=============================================================================
+void CGaugeOrbitSlash2D::MaxGauge(void)
+{
+	// ゲージの幅を増やす
+	float fWidth = GetWidth();  // 幅
+	fWidth = (m_fMaxOrbit * GetGaugeRate()) / 2;
+	SetWidth(fWidth);
+	m_State = STATE_MAX;
+
+	// ポリゴンの幅を増やす
+	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
+	if (pVtxBuff != NULL)
+	{// 頂点バッファが生成されている
+	    // 頂点情報の設定
+		VERTEX_2D *pVtx;
+
+		// 頂点バッファをロックし,頂点データへのポインタを取得
+		pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+		// 頂点座標
+		pVtx[0].pos = D3DXVECTOR3(GetLeftWidth(), -GetHeight(), 0.0f) + GetPos();
+		pVtx[1].pos = D3DXVECTOR3(GetWidth(), -GetHeight(), 0.0f) + GetPos();
+		pVtx[2].pos = D3DXVECTOR3(GetLeftWidth() + GAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
+		pVtx[3].pos = D3DXVECTOR3(GetWidth() + GAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
+
+		// 頂点バッファをアンロックする
+		pVtxBuff->Unlock();
+	}
+}
+
+//=============================================================================
 //    ゲージをなくす処理
 //=============================================================================
 void CGaugeOrbitSlash2D::DeleteGauge(void)
@@ -1553,6 +1655,12 @@ void CGaugeOrbitSlash2D::DeleteGauge(void)
 	float fWidth = GetWidth();  // 幅
 	fWidth = GetLeftWidth();
 	SetWidth(fWidth);
+	m_State = STATE_NONE;
+
+	// ゲージの色を戻す
+	D3DXCOLOR col = GetCol();
+	col.b = 0.0f;
+	SetCol(col);
 
 	// ポリゴンの幅をなくす
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
@@ -1569,6 +1677,12 @@ void CGaugeOrbitSlash2D::DeleteGauge(void)
 		pVtx[1].pos = D3DXVECTOR3(GetWidth(), -GetHeight(), 0.0f) + GetPos();
 		pVtx[2].pos = D3DXVECTOR3(GetLeftWidth() + GAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
 		pVtx[3].pos = D3DXVECTOR3(GetWidth() + GAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
+
+		// 頂点カラー
+		pVtx[0].col = col;
+		pVtx[1].col = col;
+		pVtx[2].col = col;
+		pVtx[3].col = col;
 
 		// 頂点バッファをアンロックする
 		pVtxBuff->Unlock();
@@ -1647,6 +1761,7 @@ CGaugeSpecial2D::CGaugeSpecial2D(int nPriority, OBJTYPE objType) : CGauge2D(nPri
 	m_State = STATE_NONE;      // 状態
 	m_fSpecial = 0.0f;         // 必殺ゲージ量
 	m_fMaxSpecial = 0.0f;      // 必殺ゲージの最大値
+	m_fFlashValue = 0.0f;      // 点滅に使用する値
 	m_pBlack2D = NULL;         // 黒い背景用ポリゴン
 	m_pFrame2D = NULL;         // 必殺ゲージのフレーム
 }
@@ -1762,6 +1877,9 @@ HRESULT CGaugeSpecial2D::Init(void)
 	// ゲージの幅をリセット
 	DeleteGauge();
 
+	// 点滅に使用する値を設定
+	m_fFlashValue = SPECIALGAUGE_FLASH_VALUE;
+
 	return S_OK;
 }
 
@@ -1791,7 +1909,14 @@ void CGaugeSpecial2D::Uninit(void)
 //=============================================================================
 void CGaugeSpecial2D::Update(void)
 {
-
+	if (m_State == STATE_MAX)
+	{// ゲージが最大だったら
+		LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
+		if (pVtxBuff != NULL)
+		{
+			GaugeFlash(pVtxBuff);
+		}
+	}
 }
 
 //=============================================================================
@@ -1856,6 +1981,48 @@ void CGaugeSpecial2D::MakeVertex(const LPDIRECT3DDEVICE9 pDevice)
 	// 各種値を格納しておく
 	SetLeftWidth(-GetWidth());                          // ゲージの左側オフセット
 	SetGaugeRate((GetWidth() * 2.0f) / m_fMaxSpecial);  // ゲージ一本分の割合
+}
+
+//=============================================================================
+//    ゲージを点滅させる処理
+//=============================================================================
+void CGaugeSpecial2D::GaugeFlash(const LPDIRECT3DVERTEXBUFFER9 pVtxBuff)
+{
+	D3DXCOLOR col = GetCol();
+
+	col.r += m_fFlashValue;
+	col.g += m_fFlashValue;
+
+	if (col.r >= GAUGE_FLASH_MAX)
+	{
+		col.r = GAUGE_FLASH_MAX;
+		col.g = GAUGE_FLASH_MAX;
+		m_fFlashValue *= -1;
+	}
+	else if (col.r <= GAUGE_FLASH_MIN)
+	{
+		col.r = GAUGE_FLASH_MIN;
+		col.g = GAUGE_FLASH_MIN;
+		m_fFlashValue *= -1;
+	}
+
+	// 頂点情報の設定
+	VERTEX_2D *pVtx;
+
+	// 頂点バッファをロックし,頂点データへのポインタを取得
+	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点カラー
+	pVtx[0].col = col;
+	pVtx[1].col = col;
+	pVtx[2].col = col;
+	pVtx[3].col = col;
+
+	// 頂点バッファをアンロックする
+	pVtxBuff->Unlock();
+
+	// 色の設定
+	SetCol(col);
 }
 
 //=============================================================================
@@ -1932,6 +2099,13 @@ void CGaugeSpecial2D::DeleteGauge(void)
 	float fWidth = GetWidth();  // 幅
 	fWidth = GetLeftWidth();
 	SetWidth(fWidth);
+	m_State = STATE_NONE;
+
+	// ゲージの色を戻す
+	D3DXCOLOR col = GetCol();
+	col.r = 0.0f;
+	col.g = 0.0f;
+	SetCol(col);
 
 	// ポリゴンの幅をなくす
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
@@ -1949,6 +2123,12 @@ void CGaugeSpecial2D::DeleteGauge(void)
 		pVtx[2].pos = D3DXVECTOR3(GetLeftWidth() + SPECIALGAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
 		pVtx[3].pos = D3DXVECTOR3(GetWidth() + SPECIALGAUGE_WIDTH_ADD, GetHeight(), 0.0f) + GetPos();
 
+		// 頂点カラー
+		pVtx[0].col = col;
+		pVtx[1].col = col;
+		pVtx[2].col = col;
+		pVtx[3].col = col;
+
 		// 頂点バッファをアンロックする
 		pVtxBuff->Unlock();
 	}
@@ -1963,6 +2143,7 @@ void CGaugeSpecial2D::MaxGauge(void)
 	float fWidth = GetWidth();  // 幅
 	fWidth = (m_fMaxSpecial * GetGaugeRate()) / 2;
 	SetWidth(fWidth);
+	m_State = STATE_MAX;
 
 	// ポリゴンの幅を増やす
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff = GetVtxBuff();
