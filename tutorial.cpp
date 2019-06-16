@@ -538,8 +538,8 @@ void CTutorial::Update(void)
 						}
 					}
 				}
-				else if (pKeyboard->GetTrigger(DIK_RSHIFT) == true)
-				{// RSHIFTキーが押された
+				else if (pKeyboard->GetTrigger(DIK_O) == true)
+				{// Oキーが押された
 					CManager::GetFade()->SetFade(CManager::MODE_GAME);
 					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_PRESS);
 				}

@@ -32,17 +32,17 @@
 //*****************************************************************************
 //    マクロ定義
 //*****************************************************************************
-#define GAME_SET_MINIMAP            (true)                      // ミニマップを表示するかどうか
-#define GAME_SET_UI                 (true)                      // UIを画面に表示するかどうか
+#define GAME_SET_MINIMAP            (true)                             // ミニマップを表示するかどうか
+#define GAME_SET_UI                 (true)                             // UIを画面に表示するかどうか
 
-#define GAME_SYSTEM_FILENAME        "data/TEXT/MODE/game.ini"   // ゲームの初期化情報スクリプトファイル名
-#define GAME_MODECHANGE_TIMING      (60)                        // 画面遷移を自動で行うタイミング
-#define GAME_MAPCLEAR_CHANGETIMING  (60)                        // マップクリア状態になってからマップを切り替えるまでの時間
-#define GAME_POLYGON_PRIORITY       (11)                        // ゲームで使用するポリゴンの処理優先順位
+#define GAME_SYSTEM_FILENAME        "data/TEXT/MODE/game.ini"          // ゲームの初期化情報スクリプトファイル名
+#define GAME_MODECHANGE_TIMING      (60)                               // 画面遷移を自動で行うタイミング
+#define GAME_MAPCLEAR_CHANGETIMING  (60)                               // マップクリア状態になってからマップを切り替えるまでの時間
+#define GAME_POLYGON_PRIORITY       (11)                               // ゲームで使用するポリゴンの処理優先順位
 
-#define GAME_STAGECLEAE_BONUS       (10000)                     // ステージクリア数１つ分のボーナス
-#define GAME_COMBOMAX_BONUS         (100)                       // コンボ数１つ分のボーナス
-#define GAME_HIDDENITEM_BONUS       (5000)                      // 隠しアイテム数１つ分のボーナス
+#define GAME_STAGECLEAE_BONUS       (10000)                            // ステージクリア数１つ分のボーナス
+#define GAME_COMBOMAX_BONUS         (100)                              // コンボ数１つ分のボーナス
+#define GAME_HIDDENITEM_BONUS       (5000)                             // 隠しアイテム数１つ分のボーナス
 
 #define GAME_PLAYER_POSITION_POS    (D3DXVECTOR3(1125.0f,105.0f,0.0f)) // ミニマップに表示するプレイヤーの位置把握用ポリゴンの座標
 #define GAME_PLAYER_POSITION_WIDTH  (8.0f)                             // ミニマップに表示するプレイヤーの位置把握用ポリゴンの幅
@@ -479,18 +479,24 @@ HRESULT CGame::Init(void)
 						//}
 					}
 
-					// プレイヤーの場所を表示するポリゴンを生成する
-					m_pPlayerPosition = CScene2D::Create(GAME_PLAYER_POSITION_POS, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), GAME_PLAYER_POSITION_WIDTH, GAME_PLAYER_POSITION_HEIGHT, 0.0f, GAME_POLYGON_PRIORITY);
-					if (m_pPlayerPosition != NULL)
+					if (GAME_SET_MINIMAP)
 					{
-						m_pPlayerPosition->BindTexture(m_pTextureManager->GetTexture(6));
+						// プレイヤーの場所を表示するポリゴンを生成する
+						m_pPlayerPosition = CScene2D::Create(GAME_PLAYER_POSITION_POS, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), GAME_PLAYER_POSITION_WIDTH, GAME_PLAYER_POSITION_HEIGHT, 0.0f, GAME_POLYGON_PRIORITY);
+						if (m_pPlayerPosition != NULL)
+						{
+							m_pPlayerPosition->BindTexture(m_pTextureManager->GetTexture(6));
+						}
 					}
 
-					// 目的地を表示するポリゴンを生成する
-					m_pDestPosition = CScene2D::Create(GAME_DEST_POSITION_POS, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), GAME_DEST_POSITION_WIDTH, GAME_DEST_POSITION_HEIGHT, 0.0f, GAME_POLYGON_PRIORITY);
-					if (m_pDestPosition != NULL)
+					if (GAME_SET_MINIMAP)
 					{
-						m_pDestPosition->BindTexture(m_pTextureManager->GetTexture(20));
+						// 目的地を表示するポリゴンを生成する
+						m_pDestPosition = CScene2D::Create(GAME_DEST_POSITION_POS, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), GAME_DEST_POSITION_WIDTH, GAME_DEST_POSITION_HEIGHT, 0.0f, GAME_POLYGON_PRIORITY);
+						if (m_pDestPosition != NULL)
+						{
+							m_pDestPosition->BindTexture(m_pTextureManager->GetTexture(20));
+						}
 					}
 
 					// 草の配置

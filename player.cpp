@@ -53,7 +53,7 @@
 #define PLAYER_ORBITATTACK_ACCEL     (6.0f)                             // オービットアタック時の加速値
 #define PLAYER_ORBIT_UPVALUE         (1.0f)                             // １回の更新で回復する軌跡ゲージ量
 #define PLAYER_ORBIT_CUTVALUE        (0.5f)                             // １回の更新で減少する軌跡ゲージ量
-#define PLAYER_DASH_ACCEL            (5.5f)                             // ダッシュ時の加速値
+#define PLAYER_DASH_ACCEL            (4.3f)                             // ダッシュ時の加速値
 
 // 攻撃用マクロ
 #define PLAYER_ATTACK_EFFECT_00      (12)                               // 攻撃のエフェクトを出すタイミング(1つ目)
